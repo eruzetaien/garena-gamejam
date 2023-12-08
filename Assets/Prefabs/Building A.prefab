@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6382357250018451251}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Building A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 6382357251199937637}
   - component: {fileID: 6382357251199937635}
   - component: {fileID: 6382357251199937636}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Square (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -155,7 +155,7 @@ GameObject:
   - component: {fileID: 6382357251240819975}
   - component: {fileID: 6382357251240819974}
   - component: {fileID: 6382357251240819973}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}

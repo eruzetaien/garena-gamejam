@@ -18,6 +18,12 @@ public class LevelGenerator : MonoBehaviour
 
     public int decorRarity = 2;
 
+
+    public GameObject chicken;
+    public int chickenConsequtive = 5;
+    public int chickenRarity = 4;
+
+
     public int buildingXDistance = 2;
     public int buildingYDistance = 3;
 
@@ -30,6 +36,8 @@ public class LevelGenerator : MonoBehaviour
         // generate random level
         levelGenerateX = 0;
         levelGenerateY = 0;
+
+        int sisaChicken = 0;
 
         for (int i = 0; i < 50; i++)
         {
@@ -44,14 +52,33 @@ public class LevelGenerator : MonoBehaviour
             // instantiate decorations
             for (int j = 0; j < building.width-2;)
             {
+                // spawn decor
                 Building decoration = decorations[Random.Range(0, decorations.Length)];
                 if (Random.Range(0, decorRarity) == 0)
                 {
                     Instantiate(decoration.prefab, pos + Vector3Int.right * j + Vector3Int.up, Quaternion.identity);
                 }
 
-                j += decoration.width;
+                j += building.width;
             }
+
+            // instantiate chicken
+            for (int j = 0; j < building.width - 2; j++){
+
+                // spawn chicken
+                if (sisaChicken > 0)
+                {
+                    Instantiate(chicken, pos + Vector3Int.right * j + Vector3Int.up, Quaternion.identity);
+                    sisaChicken--;
+
+                }
+                else if (Random.Range(0, decorRarity) == 0)
+                {
+                    sisaChicken = chickenConsequtive;
+
+                }
+            }
+
             levelGenerateX += building.width;
 
 
