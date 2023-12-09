@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Human : MonoBehaviour
 {
-    [SerializeField] private int damage;
-
     public enum HumanType
     {
         None = 0,
@@ -26,9 +24,5 @@ public class Human : MonoBehaviour
     {
         
     }
-
-    public int getDamage()
-    {
-        return damage;
-    }
+    
 }
