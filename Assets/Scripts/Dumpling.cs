@@ -8,8 +8,10 @@ public class Dumpling : MonoBehaviour
 {
     [SerializeField] private float speed = 5.0f;
     [SerializeField] private float jumpPower = 9.0f;
+    [SerializeField] private float fallPower = 100.0f;
     [SerializeField] private LayerMask groundLayer;
-    
+    [SerializeField] private SpriteRenderer playerSprite;
+
     private int totalChicken = 0;
     private BoxCollider2D playerColl;
     private Rigidbody2D playerRb;
@@ -49,8 +51,9 @@ public class Dumpling : MonoBehaviour
         active = true;
 
         StartCoroutine(Tabrak());
-
-
+        ShowPlayer();
+        
+        // IncreaseChickenBy(11);
     }
 
     // Update is called once per frame
@@ -61,13 +64,30 @@ public class Dumpling : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Jump();
-        RightMovement();
+        if (active)
+        {
+            
+            RightMovement();
+        
+            Jump();
+            Fall();
+        }
+
     }
     IEnumerator Tabrak()
     {
+        yield return new WaitUntil(() => OnTabrak());
+
+        yield return StartCoroutine(Respawn(10));
+        
+        StartCoroutine(Tabrak());
+    }
+
+    IEnumerator Respawn(int damage)
+    {
         active = false;
-        IncreaseChickenBy(-10);
+        IncreaseChickenBy(-damage);
+        playerRb.velocity = Vector2.zero;
         playerRb.velocity = new Vector2(-5, 5);
 
         yield return new WaitForSeconds(1f);
@@ -75,10 +95,6 @@ public class Dumpling : MonoBehaviour
         active = true;
         playerRb.velocity = Vector2.zero;
         playerRb.position = lastCheckpointPos;
-
-        yield return new WaitUntil(() => OnTabrak());
-
-        StartCoroutine(Tabrak());
     }
 
     private void RightMovement()
@@ -91,6 +107,14 @@ public class Dumpling : MonoBehaviour
         if (OnGround() && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.Space)) )
         {
             playerRb.velocity = new Vector2(playerRb.velocity.x, jumpPower);
+        }
+    }
+
+    private void Fall()
+    {
+        if (Input.GetKey(KeyCode.S) )
+        {
+            playerRb.velocity = new Vector2(playerRb.velocity.x, -fallPower);
         }
     }
     
@@ -125,7 +149,65 @@ public class Dumpling : MonoBehaviour
         {
             lastCheckpointPos = col.transform.position;
 
+        } else if (col.gameObject.CompareTag("Human") && active)
+        {
+            Human human = col.gameObject.GetComponent<Human>();
+            switch (human.humanType)
+            {
+                case Human.HumanType.Child :
+                    if (chickenState == ChickenState.STATE_1)
+                    {
+                        StartCoroutine(Respawn(human.getDamage()));
+                    }
+                    else
+                    {
+                        Destroy(col.gameObject);
+                    }
+                    break;
+                case Human.HumanType.Adult :
+                    if (chickenState == ChickenState.STATE_1 ||
+                        chickenState == ChickenState.STATE_2)
+                    {
+                        StartCoroutine(Respawn(human.getDamage()));
+                    }
+                    else
+                    {
+                        Destroy(col.gameObject);
+                    }
+
+                    break;
+
+                case Human.HumanType.Chef :
+                    StartCoroutine(Wait());
+                    IncreaseChickenBy(-human.getDamage());
+                    break;
+                default:
+                    IncreaseChickenBy(-5);
+                    break;
+            }
         }
+    }
+    
+    IEnumerator Wait()
+    {
+        Time.timeScale = 0.2f;
+        float time = 2f * Time.timeScale;
+        yield return new WaitForSeconds(time);
+        Time.timeScale = 1f;
+    }
+
+    private void HidePlayer()
+    {
+        Color transparentColor = playerSprite.color;
+        transparentColor.a = 0f;
+        playerSprite.color = transparentColor;
+    }
+    
+    private void ShowPlayer()
+    {
+        Color transparentColor = playerSprite.color;
+        transparentColor.a = 1f;
+        playerSprite.color = transparentColor;
     }
 
     private void IncreaseChickenBy(int amount)
@@ -156,6 +238,12 @@ public class Dumpling : MonoBehaviour
         chickenSlider1.value = totalChicken;
         chickenSlider2.value = totalChicken - 10;
         chickenSlider3.value = totalChicken - 20;
+        
+        if (totalChicken <= 0)
+        {
+            GameManager.Singleton.GameOver();
+            HidePlayer();
+        }
     }
 
     private void OnDrawGizmosSelected()
