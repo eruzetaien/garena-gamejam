@@ -10,7 +10,7 @@ public class Dumpling : MonoBehaviour
     [SerializeField] private float jumpPower = 9.0f;
     [SerializeField] private LayerMask groundLayer;
     
-    private int totalChicken = 0;
+    [SerializeField] private int totalChicken = 0;
     private BoxCollider2D playerColl;
     private Rigidbody2D playerRb;
     
@@ -27,6 +27,7 @@ public class Dumpling : MonoBehaviour
         STATE_1,
         STATE_2,
         STATE_3
+
     }
     
     private ChickenState chickenState = ChickenState.STATE_1;
@@ -36,6 +37,11 @@ public class Dumpling : MonoBehaviour
     {
         playerRb = GetComponent<Rigidbody2D>();
         playerColl = GetComponent<BoxCollider2D>();
+        
+                
+        totalChicken = 13;
+        
+        UpdateState();
     }
 
     // Update is called once per frame
@@ -82,12 +88,38 @@ public class Dumpling : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.CompareTag("Human"))
+        {
+          TakeDamage(col.gameObject.GetComponent<Human>().getDamage());  
+        }
+
+    }
+    
+    private void TakeDamage(int damage)
+    {
+         totalChicken -= damage;
+         
+         if (totalChicken < 0)
+         {
+             totalChicken = 0;
+         }
+         
+         UpdateState();
+    }
+
     private void EatChicken()
     {
         if (totalChicken == MAX_CHICKEN_STATE_3){return;}
         
         totalChicken++;
         
+        UpdateState();
+    }
+
+    private void UpdateState()
+    {
         if (totalChicken > MAX_CHICKEN_STATE_2)
         {
             chickenState = ChickenState.STATE_3;
