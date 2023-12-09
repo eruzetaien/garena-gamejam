@@ -28,6 +28,7 @@ public class Dumpling : MonoBehaviour
 
     [SerializeField] private Transform rightCheck;
     [SerializeField] private Transform groundCheck;
+    [SerializeField] private float rightCheckRadius = 0.1f;
 
     private Vector3 lastCheckpointPos;
 
@@ -90,7 +91,7 @@ public class Dumpling : MonoBehaviour
 
     bool OnTabrak()
     {
-        if (Physics2D.OverlapPoint(rightCheck.position, groundLayer) != null)
+        if (Physics2D.OverlapCircle(rightCheck.position, rightCheckRadius, groundLayer) != null)
         {
             return true;
         }
@@ -136,5 +137,10 @@ public class Dumpling : MonoBehaviour
         chickenSlider1.value = totalChicken ;
         chickenSlider2.value = totalChicken - 10;
         chickenSlider3.value = totalChicken - 20;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(rightCheck.position, rightCheckRadius);
     }
 }
