@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Chicken
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
@@ -44,6 +45,9 @@ TagManager:
     locked: 0
   - name: Building
     uniqueID: 3099536823
+    locked: 0
+  - name: Decor
+    uniqueID: 4108744831
     locked: 0
   - name: Entity
     uniqueID: 2957614039
