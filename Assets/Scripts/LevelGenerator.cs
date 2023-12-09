@@ -50,10 +50,8 @@ public class LevelGenerator : MonoBehaviour
 
         player = GameObject.FindWithTag("Player").transform;
 
-        for (int i = 0; i < 50; i++)
-        {
-            
-        }
+        // play music
+        SoundManager.soundManager.PlayLooping("bgm");
     }
 
     // Update is called once per frame

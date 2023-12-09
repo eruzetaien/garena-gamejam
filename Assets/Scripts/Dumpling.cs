@@ -33,6 +33,9 @@ public class Dumpling : MonoBehaviour
     private Vector3 lastCheckpointPos;
     private bool active;
 
+    [SerializeField] private float hungerDecreaseRate = 1;
+    private float timer;
+
     enum ChickenState
     {
         STATE_1,
@@ -59,7 +62,12 @@ public class Dumpling : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        timer -= Time.deltaTime;
+        if (timer < 0)
+        {
+            timer = hungerDecreaseRate;
+            IncreaseChickenBy(-1);
+        }
     }
 
     private void FixedUpdate()
@@ -72,19 +80,26 @@ public class Dumpling : MonoBehaviour
     }
     IEnumerator Tabrak()
     {
+
+        yield return new WaitUntil(() => OnTabrak());
+
+        SoundManager.soundManager.Play("hurt");
+
         active = false;
         IncreaseChickenBy(-10);
         playerRb.velocity = new Vector2(-5, 5);
 
         yield return new WaitForSeconds(1f);
 
+        RefreshState();
+
         active = true;
         playerRb.velocity = Vector2.zero;
         playerRb.position = lastCheckpointPos;
 
-        yield return new WaitUntil(() => OnTabrak());
-
         StartCoroutine(Tabrak());
+
+
     }
 
     private void RightMovement()
@@ -96,6 +111,7 @@ public class Dumpling : MonoBehaviour
     {
         if (OnGround() && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.Space)) )
         {
+            SoundManager.soundManager.Play("jump");
             playerRb.velocity = new Vector2(playerRb.velocity.x, jumpPower);
         }
     }
@@ -126,6 +142,7 @@ public class Dumpling : MonoBehaviour
         {
             Destroy(col.gameObject);
             IncreaseChickenBy(1);
+            RefreshState();
 
         } else if (col.gameObject.CompareTag("Checkpoint"))
         {
@@ -133,24 +150,31 @@ public class Dumpling : MonoBehaviour
 
         }
     }
-
     private void IncreaseChickenBy(int amount)
     {
         totalChicken += amount;
 
         totalChicken = Mathf.Clamp(totalChicken, 0, MAX_CHICKEN_STATE_3);
 
+        chickenSlider1.value = totalChicken;
+        chickenSlider2.value = totalChicken - 10;
+        chickenSlider3.value = totalChicken - 20;
+
+
+    }
+    private void RefreshState()
+    {
         if (totalChicken > MAX_CHICKEN_STATE_2)
         {
             chickenState = ChickenState.STATE_3;
             transform.localScale = new Vector3(3f, 3f, 0);
-            rightCheckRadius = 0.5f;
+            rightCheckRadius = 0.7f;
         }
         else if (totalChicken > MAX_CHICKEN_STATE_1)
         {
             chickenState = ChickenState.STATE_2;
             transform.localScale = new Vector3(2f, 2f, 0);
-            rightCheckRadius = 0.3f;
+            rightCheckRadius = 0.4f;
         }
         else
         {
@@ -159,9 +183,7 @@ public class Dumpling : MonoBehaviour
             rightCheckRadius = 0.1f;
         }
 
-        chickenSlider1.value = totalChicken;
-        chickenSlider2.value = totalChicken - 10;
-        chickenSlider3.value = totalChicken - 20;
+        
     }
 
     private void OnDrawGizmosSelected()
