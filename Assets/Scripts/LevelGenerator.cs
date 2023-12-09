@@ -120,14 +120,14 @@ public class LevelGenerator : MonoBehaviour
                 if (progress % chefInterval == 30)
                 {
                     // spawn chef
-                    Transform u = Instantiate(chef, pos + Vector3Int.right * j + Vector3Int.up, Quaternion.identity).transform;
+                    Transform u = Instantiate(chef, pos + Vector3Int.right * j + Vector3Int.up *2, Quaternion.identity).transform;
                     u.SetParent(room);
 
                 }
                 else if (Random.Range(0, adultRarity) == 0)
                 {
                     // spawn adult
-                    Transform u = Instantiate(adult, pos + Vector3Int.right * j + Vector3Int.up, Quaternion.identity).transform;
+                    Transform u = Instantiate(adult, pos + Vector3Int.right * j + Vector3.up *1.5f, Quaternion.identity).transform;
                     u.SetParent(room);
 
                 }
