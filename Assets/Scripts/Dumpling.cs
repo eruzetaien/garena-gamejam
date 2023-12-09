@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,7 @@ public class Dumpling : MonoBehaviour
 
     
     private int totalChicken = 0;
-    private BoxCollider2D playerColl;
+    private CircleCollider2D playerColl;
     private Rigidbody2D playerRb;
 
 
@@ -38,6 +39,12 @@ public class Dumpling : MonoBehaviour
     [SerializeField] private float hungerDecreaseRate = 1;
     private float timer;
 
+    // Animation
+    private Animator animator;
+    [SerializeField] private AnimatorController phase1Controller;
+    [SerializeField] private AnimatorOverrideController phase2Controller;
+    [SerializeField] private AnimatorOverrideController phase3Controller;
+
     enum ChickenState
     {
         STATE_1,
@@ -51,7 +58,8 @@ public class Dumpling : MonoBehaviour
     void Start()
     {
         playerRb = GetComponent<Rigidbody2D>();
-        playerColl = GetComponent<BoxCollider2D>();
+        playerColl = GetComponent<CircleCollider2D>();
+        animator = GetComponentInChildren<Animator>();
 
         lastCheckpointPos = transform.position;
         active = true;
@@ -71,6 +79,7 @@ public class Dumpling : MonoBehaviour
             timer = hungerDecreaseRate;
             IncreaseChickenBy(-1);
         }
+        animator.SetFloat("yVelocity", playerRb.velocity.y);
     }
 
     private void FixedUpdate()
@@ -87,6 +96,8 @@ public class Dumpling : MonoBehaviour
     {
 
         yield return new WaitUntil(() => OnTabrak());
+
+        animator.SetTrigger("hurt");
 
         SoundManager.soundManager.Play("hurt");
 
@@ -106,11 +117,15 @@ public class Dumpling : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+
+        // respawn
         RefreshState();
 
         active = true;
         playerRb.velocity = Vector2.zero;
         playerRb.position = lastCheckpointPos;
+
+        animator.SetTrigger("respawn");
     }
 
     private void RightMovement()
@@ -141,8 +156,10 @@ public class Dumpling : MonoBehaviour
         //RaycastHit2D hit = Physics2D.BoxCast(playerColl.bounds.center, playerColl.bounds.size, 0f, Vector2.down, distance, groundLayer);
         Collider2D a = Physics2D.OverlapCircle(groundCheck.position, distance, groundLayer);
         if (a != null) {
+            animator.SetBool("isGrounded", true);
             return true;
         }
+        animator.SetBool("isGrounded", false);
         return false;
     }
 
@@ -244,22 +261,49 @@ public class Dumpling : MonoBehaviour
     }
     private void RefreshState()
     {
+
         if (totalChicken > MAX_CHICKEN_STATE_2)
         {
             chickenState = ChickenState.STATE_3;
-            transform.localScale = new Vector3(3f, 3f, 0);
+
+            animator.runtimeAnimatorController = phase3Controller;
+            rightCheck.localPosition = new Vector3(1.5f, 1, 0);
+            playerColl.radius = 1.5f;
+            playerColl.offset = new Vector2(0, 1);
+
+
+            //transform.localScale = new Vector3(3f, 3f, 0);
+
             rightCheckRadius = 0.7f;
         }
         else if (totalChicken > MAX_CHICKEN_STATE_1)
         {
             chickenState = ChickenState.STATE_2;
-            transform.localScale = new Vector3(2f, 2f, 0);
+
+            animator.runtimeAnimatorController = phase2Controller;
+            rightCheck.localPosition = new Vector3(1, 0.5f, 0);
+            playerColl.radius = 1f;
+            playerColl.offset = new Vector2(0, 0.5f);
+
+
+
+
+            //transform.localScale = new Vector3(2f, 2f, 0);
             rightCheckRadius = 0.4f;
         }
         else
         {
             chickenState = ChickenState.STATE_1;
-            transform.localScale = new Vector3(1f, 1f, 0);
+
+            animator.runtimeAnimatorController = phase1Controller;
+            rightCheck.localPosition = new Vector3(0.5f, 0, 0);
+            playerColl.radius = 0.5f;
+            playerColl.offset = new Vector2(0, 0);
+
+
+
+
+            //transform.localScale = new Vector3(1f, 1f, 0);
             rightCheckRadius = 0.1f;
         }
 
