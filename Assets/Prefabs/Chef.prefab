@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 97164702676570889}
   - component: {fileID: 97164702676570888}
   - component: {fileID: 97164702676570894}
-  - component: {fileID: -7859361376835259282}
   m_Layer: 0
   m_Name: Chef
   m_TagString: Human
@@ -75,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1337353257
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
@@ -148,15 +147,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   humanType: 3
---- !u!114 &-7859361376835259282
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 97164702676570933}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fed16bf7a2c81c46af5d358252d9b9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
