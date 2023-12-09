@@ -35,7 +35,7 @@ public class LevelGenerator : MonoBehaviour
     int sisaChicken;
 
     // player
-    Transform player;
+    public Transform player;
 
     // checkpoin
     public GameObject checkpoint;
@@ -47,9 +47,7 @@ public class LevelGenerator : MonoBehaviour
         levelGenerateY = 0;
 
         sisaChicken = 0;
-
-        player = GameObject.FindWithTag("Player").transform;
-
+        
         // play music
         SoundManager.soundManager.PlayLooping("bgm");
     }

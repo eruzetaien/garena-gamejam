@@ -13,8 +13,12 @@ public class GameManager : MonoBehaviour
     [SerializeField]private TextMeshProUGUI timeScore;
 
     private float timer;
-
-
+    
+    [SerializeField] private GameObject buttonRushScreen;
+    [SerializeField] private TextMeshProUGUI pressCountText;
+    private bool isButtonRushActive = false;
+    private int pressCount = 0;
+    private bool isUpButtomPressed;
 
     public void Awake()
     {
@@ -37,6 +41,28 @@ public class GameManager : MonoBehaviour
     void Update () {
         
         timer += Time.deltaTime;
+        
+        if (isButtonRushActive)
+        {
+            if (isUpButtomPressed)
+            {
+                if (Input.GetKeyDown(KeyCode.S) )
+                {
+                    pressCount++;
+                    pressCountText.text = pressCount.ToString();
+                    isUpButtomPressed = false;
+                }
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.W) )
+                {
+                    pressCount++;
+                    pressCountText.text = pressCount.ToString();
+                    isUpButtomPressed = true;
+                }
+            }
+        }
     }
 
     public void GameOver()
@@ -55,5 +81,18 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void ActivateButtonRushPhase()
+    {
+        pressCount = 0;
+        isButtonRushActive = true;
+        buttonRushScreen.SetActive(true);
+    }
     
+    public int DeactivateButtonRushPhase()
+    {
+        isButtonRushActive = false;
+        buttonRushScreen.SetActive(false);
+        return pressCount;
+    }
 }

@@ -8,7 +8,7 @@ public class Dumpling : MonoBehaviour
 {
     [SerializeField] private float speed = 5.0f;
     [SerializeField] private float jumpPower = 9.0f;
-    [SerializeField] private float fallPower = 100.0f;
+    [SerializeField] private float fallPower = 50.0f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private SpriteRenderer playerSprite;
 
@@ -59,7 +59,7 @@ public class Dumpling : MonoBehaviour
         StartCoroutine(Tabrak());
         ShowPlayer();
         
-        // IncreaseChickenBy(11);
+        IncreaseChickenBy(5);
     }
 
     // Update is called once per frame
@@ -120,7 +120,7 @@ public class Dumpling : MonoBehaviour
 
     private void Jump()
     {
-        if (OnGround() && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.Space)) )
+        if (OnGround() && (Input.GetKey(KeyCode.W)) )
         {
             SoundManager.soundManager.Play("jump");
             playerRb.velocity = new Vector2(playerRb.velocity.x, jumpPower);
@@ -129,7 +129,7 @@ public class Dumpling : MonoBehaviour
 
     private void Fall()
     {
-        if (Input.GetKey(KeyCode.S) )
+        if (OnGround() && Input.GetKey(KeyCode.S) )
         {
             playerRb.velocity = new Vector2(playerRb.velocity.x, -fallPower);
         }
@@ -196,8 +196,7 @@ public class Dumpling : MonoBehaviour
                     break;
 
                 case Human.HumanType.Chef :
-                    StartCoroutine(Wait());
-                    IncreaseChickenBy(-human.getDamage());
+                    StartCoroutine(ButtonRush());
                     break;
                 default:
                     IncreaseChickenBy(-5);
@@ -206,11 +205,20 @@ public class Dumpling : MonoBehaviour
         }
     }
     
-    IEnumerator Wait()
+    IEnumerator ButtonRush()
     {
-        Time.timeScale = 0.2f;
-        float time = 2f * Time.timeScale;
+        active = false;
+        playerRb.velocity = Vector2.zero;
+        float time = 3f;
+        GameManager.Singleton.ActivateButtonRushPhase();
         yield return new WaitForSeconds(time);
+        active = true;
+        
+        int pressedCount = GameManager.Singleton.DeactivateButtonRushPhase();
+        if (pressedCount < 10)
+        {
+            yield return StartCoroutine(Respawn(10));
+        }
         Time.timeScale = 1f;
     }
 
@@ -233,12 +241,6 @@ public class Dumpling : MonoBehaviour
         totalChicken += amount;
 
         totalChicken = Mathf.Clamp(totalChicken, 0, MAX_CHICKEN_STATE_3);
-
-        chickenSlider1.value = totalChicken;
-        chickenSlider2.value = totalChicken - 10;
-        chickenSlider3.value = totalChicken - 20;
-
-
     }
     private void RefreshState()
     {

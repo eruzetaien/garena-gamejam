@@ -22,12 +22,12 @@ public class SoundManager : MonoBehaviour
     public Sound[] sounds;
     public List<AudioSource> audioSources;
 
-    void Start()
+    void Awake()
     {
         if (soundManager == null)
         {
             soundManager = this;
-            DontDestroyOnLoad(gameObject);
+            // DontDestroyOnLoad(gameObject);
         } else
         {
             Destroy(gameObject);
