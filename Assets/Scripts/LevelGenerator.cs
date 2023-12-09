@@ -34,6 +34,18 @@ public class LevelGenerator : MonoBehaviour
 
     int sisaChicken;
 
+    // human
+    public GameObject child;
+    public GameObject adult;
+    public GameObject chef;
+
+    public int chefInterval = 100;
+    public int humanRarity = 5;
+    public int adultRarity = 4;
+
+    private int progress;
+    private int prevHuman;
+
     // player
     public Transform player;
 
@@ -47,6 +59,9 @@ public class LevelGenerator : MonoBehaviour
         levelGenerateY = 0;
 
         sisaChicken = 0;
+
+        // mencegah spawn human di 20 block pertama
+        progress = -20;
         
         // play music
         SoundManager.soundManager.PlayLooping("bgm");
@@ -93,6 +108,39 @@ public class LevelGenerator : MonoBehaviour
         // instantiate chicken
         for (int j = 0; j < building.width; j++)
         {
+            progress++;
+
+            if ((progress <= 0 || progress < prevHuman + 10) && progress % chefInterval != 0)
+            {
+                // nothing happen
+
+            } else {
+                // spawn human
+                if (progress % chefInterval == 0)
+                {
+                    // spawn chef
+                    Transform u = Instantiate(chef, pos + Vector3Int.right * j + Vector3Int.up, Quaternion.identity).transform;
+                    u.SetParent(room);
+
+                }
+                else if (Random.Range(0, adultRarity) == 0)
+                {
+                    // spawn adult
+                    Transform u = Instantiate(adult, pos + Vector3Int.right * j + Vector3Int.up, Quaternion.identity).transform;
+                    u.SetParent(room);
+
+                }
+                else
+                {
+                    // spawn child
+                    Transform u = Instantiate(child, pos + Vector3Int.right * j + Vector3Int.up, Quaternion.identity).transform;
+                    u.SetParent(room);
+
+                }
+
+                prevHuman = progress;
+
+            }
 
             // spawn chicken
             if (sisaChicken > 0)
@@ -107,6 +155,8 @@ public class LevelGenerator : MonoBehaviour
                 sisaChicken = chickenConsequtive;
 
             }
+
+            
         }
 
         levelGenerateX += building.width;
