@@ -74,7 +74,7 @@ public class Dumpling : MonoBehaviour
     void Update()
     {
         timer -= Time.deltaTime;
-        if (timer < 0)
+        if (timer < 0 && active)
         {
             timer = hungerDecreaseRate;
             IncreaseChickenBy(-1);
@@ -103,29 +103,44 @@ public class Dumpling : MonoBehaviour
 
         yield return new WaitUntil(() => OnTabrak());
 
-        yield return StartCoroutine(Respawn(10));
+        yield return StartCoroutine(Respawn(10, true));
         
         StartCoroutine(Tabrak());
     }
 
-    IEnumerator Respawn(int damage)
+    IEnumerator Respawn(int damage, bool onCheckPoint)
     {
         active = false;
         IncreaseChickenBy(-damage);
         playerRb.velocity = Vector2.zero;
-        playerRb.velocity = new Vector2(-5, 5);
+        if (onCheckPoint)
+        {
+            playerRb.velocity = new Vector2(-5, 5);
+            yield return new WaitForSeconds(1f);
+        }
 
-        yield return new WaitForSeconds(1f);
 
 
         // respawn
         RefreshState();
+
+        if (! onCheckPoint)
+        {
+            playerRb.velocity = new Vector2(10, 5);
+            yield return new WaitForSeconds(1f);
+        }
 
         active = true;
         playerRb.velocity = Vector2.zero;
         playerRb.position = lastCheckpointPos;
 
         animator.SetTrigger("respawn");
+    
+        if (onCheckPoint)
+        {
+            playerRb.position = lastCheckpointPos;
+        }
+
     }
 
     private void RightMovement()
@@ -166,7 +181,6 @@ public class Dumpling : MonoBehaviour
             animator.SetBool("isGrounded", true);
             return true;
         }
-        animator.SetBool("isGrounded", false);
         return false;
     }
 
@@ -199,27 +213,35 @@ public class Dumpling : MonoBehaviour
                 case Human.HumanType.Child :
                     if (chickenState == ChickenState.STATE_1)
                     {
-                        StartCoroutine(Respawn(human.getDamage()));
+                        StartCoroutine(Respawn(10,false));
                     }
                     else
                     {
                         Destroy(col.gameObject);
+                        GameManager.Singleton.AddScore(50);
                     }
                     break;
                 case Human.HumanType.Adult :
                     if (chickenState == ChickenState.STATE_1 ||
                         chickenState == ChickenState.STATE_2)
                     {
-                        StartCoroutine(Respawn(human.getDamage()));
+                        StartCoroutine(Respawn(10,false));
                     }
                     else
                     {
                         Destroy(col.gameObject);
+                        GameManager.Singleton.AddScore(100);
                     }
 
                     break;
 
                 case Human.HumanType.Chef :
+                    if (chickenState == ChickenState.STATE_1)
+                    {
+                        StartCoroutine(Respawn(20,false));
+                        break;
+                    }
+
                     StartCoroutine(ButtonRush());
                     break;
                 default:
@@ -239,10 +261,14 @@ public class Dumpling : MonoBehaviour
         active = true;
         
         int pressedCount = GameManager.Singleton.DeactivateButtonRushPhase();
-        if (pressedCount < 10)
+        if (pressedCount < 25)
         {
-            yield return StartCoroutine(Respawn(10));
+            yield return StartCoroutine(Respawn(20,false));
+        } else
+        {
+            yield return StartCoroutine(Respawn(10,false));
         }
+
         Time.timeScale = 1f;
     }
 
@@ -268,7 +294,6 @@ public class Dumpling : MonoBehaviour
     }
     private void RefreshState()
     {
-
         if (totalChicken > MAX_CHICKEN_STATE_2)
         {
             chickenState = ChickenState.STATE_3;
