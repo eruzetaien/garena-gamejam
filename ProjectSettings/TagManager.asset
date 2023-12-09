@@ -7,15 +7,16 @@ TagManager:
   - Chicken
   - Checkpoint
   - Human
+  - Decor
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - Ground
-  - Player
+  - Decor
   - 
   - 
   - 
@@ -44,6 +45,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Ground
+    uniqueID: 2749623323
+    locked: 0
   - name: Building
     uniqueID: 3099536823
     locked: 0
@@ -52,7 +56,4 @@ TagManager:
     locked: 0
   - name: Entity
     uniqueID: 2957614039
-    locked: 0
-  - name: Effect
-    uniqueID: 2469429731
     locked: 0

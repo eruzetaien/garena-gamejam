@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5562782661411791576}
   - component: {fileID: 5562782661411791578}
   - component: {fileID: 5562782661411791579}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5562782661411791577}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.532, z: 0}
+  m_LocalPosition: {x: 0, y: -0.558, z: 0}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1337353257
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -1814995010, guid: d8c2879d8e84f45459a852e2106ca13f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 5562782661550882642}
   - component: {fileID: 5562782661550882643}
   - component: {fileID: 7273963928386166585}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Dumpling
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -168,10 +168,11 @@ MonoBehaviour:
   rightCheck: {fileID: 5562782662398101463}
   groundCheck: {fileID: 5562782662723390282}
   rightCheckRadius: 0.2
-  hungerDecreaseRate: 1
+  hungerDecreaseRate: 3
   phase1Controller: {fileID: 9100000, guid: 4758c5008d4db764b9c820bf0aaef897, type: 2}
   phase2Controller: {fileID: 22100000, guid: eb9a3db212dde824993bfcb25fb81c89, type: 2}
   phase3Controller: {fileID: 22100000, guid: 6049f4a6b3034a04680cc05c6675d2af, type: 2}
+  chickenState: 0
 --- !u!50 &5562782661550882642
 Rigidbody2D:
   serializedVersion: 4
@@ -239,7 +240,7 @@ MonoBehaviour:
   m_NormalMapQuality: 2
   m_UseNormalMap: 0
   m_ShadowIntensityEnabled: 1
-  m_ShadowIntensity: 0.75
+  m_ShadowIntensity: 0.408
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_Vertices:
@@ -297,7 +298,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5562782662398101463}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: rightCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,7 +329,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5562782662723390282}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: groundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
