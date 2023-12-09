@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Main Menu.unity
+    guid: c8f3cbfa3576de54c8f98fe1c2fc940f
+  - enabled: 1
     path: Assets/Scenes/Fredo.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/Player.unity
+    guid: 763459b2c23830248a095fb9f9850c39
+  - enabled: 1
+    path: Assets/Scenes/Enemy.unity
+    guid: e6a3244ebdf841340b4ef8c412bc1155
   m_configObjects: {}

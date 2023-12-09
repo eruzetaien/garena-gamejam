@@ -11,9 +11,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Singleton { get; private set; }
     [SerializeField] private GameObject scoreScreen;
-    [SerializeField] private TextMeshProUGUI timeScore;
-    [SerializeField] private TextMeshProUGUI eatScoreTM;
-    [SerializeField] private TextMeshProUGUI eatHighScoreTM;
+    [SerializeField] private TextMeshProUGUI scoreInGameTM;
+    [SerializeField] private TextMeshProUGUI scoreTM;
+    [SerializeField] private TextMeshProUGUI highScoreTM;
 
     
     [SerializeField] private GameObject buttonRushScreen;
@@ -22,9 +22,11 @@ public class GameManager : MonoBehaviour
     private int pressCount = 0;
     private bool isUpButtomPressed;
 
+    [SerializeField] private GameObject pauseMenu;
+    
     [SerializeField] private HighScore highScore;
-    private int eatScore;
-    private float timer;
+    private int score;
+    private float secondTimer = 0f;   
 
     public void Awake()
     {
@@ -41,14 +43,11 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        timer = 0;
-        eatScore = 0;
+        score = 0;
+        InvokeRepeating("AddTimeScore",1f,1f);
     }
     
     void Update () {
-        
-        timer += Time.deltaTime;
-        
         if (isButtonRushActive)
         {
             if (isUpButtomPressed)
@@ -70,24 +69,26 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("Pause");
+            PauseGame();
+        }
     }
     
 
     public void GameOver()
     {
         scoreScreen.gameObject.SetActive(true);
-        float minute = timer / 60;
-        float second = timer % 60;
 
-        
-        if (eatScore > highScore.GetHighScore())
+        if (score > highScore.GetHighScore())
         {
-            highScore.SetHighScore(eatScore);
+            highScore.SetHighScore(score);
         }
         
-        eatScoreTM.text = eatScore.ToString();
-        timeScore.text = minute.ToString("00") + ":" + second.ToString("00");
-        eatHighScoreTM.text = highScore.GetHighScore().ToString();
+        scoreTM.text = score.ToString();
+        highScoreTM.text = highScore.GetHighScore().ToString();
         
         Time.timeScale = 0;
     }
@@ -114,9 +115,33 @@ public class GameManager : MonoBehaviour
         buttonRushScreen.SetActive(false);
         return pressCount;
     }
-    
-    public void AddScore(int score)
+
+    public void AddTimeScore()
     {
-        eatScore += score;
+        AddScore(1);
+    }
+
+    public void AddScore(int addedScore)
+    {
+        score += addedScore;
+        scoreInGameTM.text = "Score : " +  score.ToString();
+    }
+    
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+        pauseMenu.SetActive(true);
+    }
+    
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
+        pauseMenu.SetActive(false);
+    }
+    
+    public void QuitGame()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("Main Menu");
     }
 }

@@ -5,12 +5,13 @@ using UnityEngine;
 public class SelfDestruct : MonoBehaviour
 {
 
-    Transform player;
-
-    // Start is called before the first frame update
+    public static Transform player;
     void Start()
     {
-        player = GameObject.FindWithTag("Player").transform;
+        if (player == null)
+        {
+            player = GameObject.FindWithTag("Player").transform;
+        }
     }
 
     // Update is called once per frame

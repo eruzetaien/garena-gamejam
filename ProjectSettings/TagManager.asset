@@ -15,7 +15,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
+  - Player
   - 
   - 
   - 
@@ -52,4 +52,7 @@ TagManager:
     locked: 0
   - name: Entity
     uniqueID: 2957614039
+    locked: 0
+  - name: Effect
+    uniqueID: 2469429731
     locked: 0

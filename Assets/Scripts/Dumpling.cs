@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class Dumpling : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Dumpling : MonoBehaviour
     [SerializeField] private float fallPower = 50.0f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private SpriteRenderer playerSprite;
+    [SerializeField] private GameObject eatScorePrefab;
 
     
     private int totalChicken = 0;
@@ -67,7 +69,7 @@ public class Dumpling : MonoBehaviour
         StartCoroutine(Tabrak());
         ShowPlayer();
         
-        IncreaseChickenBy(5);
+        IncreaseChickenBy(27);
     }
 
     // Update is called once per frame
@@ -133,7 +135,6 @@ public class Dumpling : MonoBehaviour
 
         active = true;
         playerRb.velocity = Vector2.zero;
-        playerRb.position = lastCheckpointPos;
 
         animator.SetTrigger("respawn");
     
@@ -221,6 +222,7 @@ public class Dumpling : MonoBehaviour
                     {
                         Destroy(col.gameObject);
                         GameManager.Singleton.AddScore(50);
+                        SpawnScore(50);
                     }
                     break;
                 case Human.HumanType.Adult :
@@ -233,6 +235,7 @@ public class Dumpling : MonoBehaviour
                     {
                         Destroy(col.gameObject);
                         GameManager.Singleton.AddScore(100);
+                        SpawnScore(100);
                     }
 
                     break;
@@ -263,7 +266,7 @@ public class Dumpling : MonoBehaviour
         active = true;
         
         int pressedCount = GameManager.Singleton.DeactivateButtonRushPhase();
-        if (pressedCount < 25)
+        if (pressedCount < 20)
         {
             yield return StartCoroutine(Respawn(20,false));
         } else
@@ -350,6 +353,17 @@ public class Dumpling : MonoBehaviour
             GameManager.Singleton.GameOver();
             HidePlayer();
         }
+    }
+
+    private void SpawnScore(int score)
+    {
+        float randomXoffset = Random.Range(-0.2f, 0.5f);
+        float randomYoffset = Random.Range(0f, 1f);
+
+        Vector3 spawnOffset = new Vector3(randomXoffset, randomYoffset, 0);
+
+        GameObject eatScoreGO = Instantiate(eatScorePrefab, transform);
+        eatScoreGO.GetComponent<EatScore>().Init(score,spawnOffset);
     }
 
     private void OnDrawGizmosSelected()
