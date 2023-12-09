@@ -118,9 +118,7 @@ public class Dumpling : MonoBehaviour
             playerRb.velocity = new Vector2(-5, 5);
             yield return new WaitForSeconds(1f);
         }
-
-
-
+        
         // respawn
         RefreshState();
 
@@ -171,9 +169,12 @@ public class Dumpling : MonoBehaviour
         //RaycastHit2D hit = Physics2D.BoxCast(playerColl.bounds.center, playerColl.bounds.size, 0f, Vector2.down, distance, groundLayer);
         Collider2D a = Physics2D.OverlapCircle(groundCheck.position, distance, groundLayer);
         if (a != null) {
+            animator.SetBool("isGrounded", true);
             return true;
         }
+        animator.SetBool("isGrounded", false);
         return false;
+        
     }
 
     bool OnTabrak()
