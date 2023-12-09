@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3484641936366793591
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3484641936366793589}
+  - component: {fileID: 3484641936366793588}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3484641936366793589
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3484641936366793591}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3484641936366793588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3484641936366793591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82bef7f05ddaf0d4492b4ce8b902458c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  masterVolume: 1
+  sounds:
+  - name: bite1
+    clip: {fileID: 8300000, guid: 4790fadd78bb1004080bce652d6fdf75, type: 3}
+    volume: 1
+  - name: bite2
+    clip: {fileID: 8300000, guid: 48eb8f6757803304aa4f8cbe718e7470, type: 3}
+    volume: 1
+  - name: bite3
+    clip: {fileID: 8300000, guid: 1981cd8352b970e418fd629293888cae, type: 3}
+    volume: 1
+  - name: jump
+    clip: {fileID: 8300000, guid: 42464509d10c7814ba7fe261b2d0c37e, type: 3}
+    volume: 0.337
+  - name: bgm
+    clip: {fileID: 8300000, guid: d40f1add564244b42bb989e8c1fec550, type: 3}
+    volume: 1
+  - name: hurt
+    clip: {fileID: 8300000, guid: 6b419e2d6eea561499f922f4e7c8c744, type: 3}
+    volume: 1
+  audioSources: []

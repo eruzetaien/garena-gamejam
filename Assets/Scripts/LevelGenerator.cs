@@ -113,13 +113,20 @@ public class LevelGenerator : MonoBehaviour
 
 
         levelGenerateX += buildingXDistance;
+        
 
         if (levelGenerateY == 0)
         {
             levelGenerateX += buildingXDistance * Random.Range(1, 3);
         }
 
-        levelGenerateY += Random.Range(-buildingYDistance, buildingYDistance + 1);
+        int ran = Random.Range(-buildingYDistance, buildingYDistance + 1);
+        if (ran == 0)
+        {
+            // no change on level y
+            levelGenerateX++;
+        }
+        levelGenerateY += ran;
         levelGenerateY = Mathf.Max(levelGenerateY, 0);
     }
 }

@@ -14,9 +14,11 @@ public class Dumpling : MonoBehaviour
 
     
     private int totalChicken = 0;
-    private BoxCollider2D playerColl;
+    private CircleCollider2D playerColl;
     private Rigidbody2D playerRb;
 
+
+    
     private const  int MAX_CHICKEN_STATE_1 = 10;
     private const  int MAX_CHICKEN_STATE_2 = 20;
     private const  int MAX_CHICKEN_STATE_3 = 30;
@@ -36,6 +38,12 @@ public class Dumpling : MonoBehaviour
     [SerializeField] private float hungerDecreaseRate = 1;
     private float timer;
 
+    // Animation
+    private Animator animator;
+    [SerializeField] private AnimatorController phase1Controller;
+    [SerializeField] private AnimatorOverrideController phase2Controller;
+    [SerializeField] private AnimatorOverrideController phase3Controller;
+
     enum ChickenState
     {
         STATE_1,
@@ -49,7 +57,8 @@ public class Dumpling : MonoBehaviour
     void Start()
     {
         playerRb = GetComponent<Rigidbody2D>();
-        playerColl = GetComponent<BoxCollider2D>();
+        playerColl = GetComponent<CircleCollider2D>();
+        animator = GetComponentInChildren<Animator>();
 
         lastCheckpointPos = transform.position;
         active = true;
@@ -57,7 +66,7 @@ public class Dumpling : MonoBehaviour
         StartCoroutine(Tabrak());
         ShowPlayer();
         
-        IncreaseChickenBy(11);
+        IncreaseChickenBy(5);
     }
 
     // Update is called once per frame
@@ -68,8 +77,8 @@ public class Dumpling : MonoBehaviour
         {
             timer = hungerDecreaseRate;
             IncreaseChickenBy(-1);
-            RefreshState();
         }
+        animator.SetFloat("yVelocity", playerRb.velocity.y);
     }
 
     private void FixedUpdate()
@@ -86,6 +95,8 @@ public class Dumpling : MonoBehaviour
     {
 
         yield return new WaitUntil(() => OnTabrak());
+
+        animator.SetTrigger("hurt");
 
         SoundManager.soundManager.Play("hurt");
 
@@ -108,6 +119,8 @@ public class Dumpling : MonoBehaviour
         }
 
 
+
+        // respawn
         RefreshState();
 
         if (! onCheckPoint)
@@ -118,6 +131,10 @@ public class Dumpling : MonoBehaviour
 
         active = true;
         playerRb.velocity = Vector2.zero;
+        playerRb.position = lastCheckpointPos;
+
+        animator.SetTrigger("respawn");
+    
         if (onCheckPoint)
         {
             playerRb.position = lastCheckpointPos;
@@ -260,7 +277,7 @@ public class Dumpling : MonoBehaviour
         playerSprite.color = transparentColor;
     }
 
-    private void  IncreaseChickenBy(int amount)
+    private void IncreaseChickenBy(int amount)
     {
         totalChicken += amount;
 
@@ -271,19 +288,45 @@ public class Dumpling : MonoBehaviour
         if (totalChicken > MAX_CHICKEN_STATE_2)
         {
             chickenState = ChickenState.STATE_3;
-            transform.localScale = new Vector3(3f, 3f, 0);
+
+            animator.runtimeAnimatorController = phase3Controller;
+            rightCheck.localPosition = new Vector3(1.5f, 1, 0);
+            playerColl.radius = 1.5f;
+            playerColl.offset = new Vector2(0, 1);
+
+
+            //transform.localScale = new Vector3(3f, 3f, 0);
+
             rightCheckRadius = 0.7f;
         }
         else if (totalChicken > MAX_CHICKEN_STATE_1)
         {
             chickenState = ChickenState.STATE_2;
-            transform.localScale = new Vector3(2f, 2f, 0);
+
+            animator.runtimeAnimatorController = phase2Controller;
+            rightCheck.localPosition = new Vector3(1, 0.5f, 0);
+            playerColl.radius = 1f;
+            playerColl.offset = new Vector2(0, 0.5f);
+
+
+
+
+            //transform.localScale = new Vector3(2f, 2f, 0);
             rightCheckRadius = 0.4f;
         }
         else
         {
             chickenState = ChickenState.STATE_1;
-            transform.localScale = new Vector3(1f, 1f, 0);
+
+            animator.runtimeAnimatorController = phase1Controller;
+            rightCheck.localPosition = new Vector3(0.5f, 0, 0);
+            playerColl.radius = 0.5f;
+            playerColl.offset = new Vector2(0, 0);
+
+
+
+
+            //transform.localScale = new Vector3(1f, 1f, 0);
             rightCheckRadius = 0.1f;
         }
 
@@ -295,7 +338,6 @@ public class Dumpling : MonoBehaviour
         {
             GameManager.Singleton.GameOver();
             HidePlayer();
-            active = false;
         }
     }
 
