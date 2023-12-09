@@ -55,14 +55,14 @@ public class Dumpling : MonoBehaviour
     private float lengthAfterEat = 0.1f;
     private float eatTimer;
 
-    enum ChickenState
+    public enum ChickenState
     {
         STATE_1,
         STATE_2,
         STATE_3
     }
     
-    private ChickenState chickenState = ChickenState.STATE_1;
+    public ChickenState chickenState = ChickenState.STATE_1;
     
     // Start is called before the first frame update
     void Start()

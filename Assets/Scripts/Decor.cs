@@ -26,9 +26,23 @@ public class Decor : MonoBehaviour
     {
         if (collision.CompareTag("Player") && !kicked)
         {
-            Debug.Log("hut");
+
             rb.bodyType = RigidbodyType2D.Dynamic;
-            rb.AddForce(new Vector2(Random.Range(1, 9), Random.Range(1, 5)), ForceMode2D.Impulse);
+
+            float power = 1;
+            switch (collision.GetComponent<Dumpling>().chickenState)
+            {
+                case Dumpling.ChickenState.STATE_1:
+                    power = 1;
+                    break;
+                case Dumpling.ChickenState.STATE_2:
+                    power = 1.5f;
+                    break;
+                case Dumpling.ChickenState.STATE_3:
+                    power = 2.5f;
+                    break;
+            }
+            rb.AddForce(new Vector2(Random.Range(1, 2 * power), Random.Range(1, power)), ForceMode2D.Impulse);
             rb.AddTorque(Random.Range(0, -45));
 
             gameObject.layer = LayerMask.NameToLayer("Decor");

@@ -118,7 +118,6 @@ GameObject:
   - component: {fileID: 5562782661550882642}
   - component: {fileID: 5562782661550882643}
   - component: {fileID: 7273963928386166585}
-  - component: {fileID: 6229991358411723503}
   m_Layer: 3
   m_Name: Dumpling
   m_TagString: Player
@@ -169,10 +168,11 @@ MonoBehaviour:
   rightCheck: {fileID: 5562782662398101463}
   groundCheck: {fileID: 5562782662723390282}
   rightCheckRadius: 0.2
-  hungerDecreaseRate: 1
+  hungerDecreaseRate: 3
   phase1Controller: {fileID: 9100000, guid: 4758c5008d4db764b9c820bf0aaef897, type: 2}
   phase2Controller: {fileID: 22100000, guid: eb9a3db212dde824993bfcb25fb81c89, type: 2}
   phase3Controller: {fileID: 22100000, guid: 6049f4a6b3034a04680cc05c6675d2af, type: 2}
+  chickenState: 0
 --- !u!50 &5562782661550882642
 Rigidbody2D:
   serializedVersion: 4
@@ -240,7 +240,7 @@ MonoBehaviour:
   m_NormalMapQuality: 2
   m_UseNormalMap: 0
   m_ShadowIntensityEnabled: 1
-  m_ShadowIntensity: 0.75
+  m_ShadowIntensity: 0.408
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_Vertices:
@@ -289,22 +289,6 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!58 &6229991358411723503
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5562782661550882640}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.6
 --- !u!1 &5562782662398101460
 GameObject:
   m_ObjectHideFlags: 0
