@@ -64,4 +64,7 @@ MonoBehaviour:
   - name: hurt
     clip: {fileID: 8300000, guid: 6b419e2d6eea561499f922f4e7c8c744, type: 3}
     volume: 1
+  - name: land
+    clip: {fileID: 8300000, guid: 132ce368379341e458f843d5e8fad136, type: 3}
+    volume: 1
   audioSources: []

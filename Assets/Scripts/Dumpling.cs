@@ -78,6 +78,7 @@ public class Dumpling : MonoBehaviour
         {
             timer = hungerDecreaseRate;
             IncreaseChickenBy(-1);
+            RefreshState();
         }
         animator.SetFloat("yVelocity", playerRb.velocity.y);
     }
@@ -181,6 +182,7 @@ public class Dumpling : MonoBehaviour
             animator.SetBool("isGrounded", true);
             return true;
         }
+        animator.SetBool("isGrounded", false);
         return false;
     }
 
