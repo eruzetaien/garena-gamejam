@@ -6564,6 +6564,8 @@ MonoBehaviour:
     width: 1
   - prefab: {fileID: 5132871451888804279, guid: a680087911a398949a3c55c059d5f91e, type: 3}
     width: 1
+  - prefab: {fileID: 777209901739417710, guid: 6f431cc761876d34b92e8356d132c56b, type: 3}
+    width: 1
   - prefab: {fileID: 5980630855062630711, guid: 46e24319eacf7f2468e4dab29658aa72, type: 3}
     width: 1
   decorRarity: 2
@@ -6681,6 +6683,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3484641936366793588, guid: 9f818d502d5d4dc418315c9be029d373, type: 3}
+      propertyPath: sounds.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484641936366793588, guid: 9f818d502d5d4dc418315c9be029d373, type: 3}
+      propertyPath: sounds.Array.data[6].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 6b419e2d6eea561499f922f4e7c8c744, type: 3}
+    - target: {fileID: 3484641936366793588, guid: 9f818d502d5d4dc418315c9be029d373, type: 3}
+      propertyPath: sounds.Array.data[6].name
+      value: hurt
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484641936366793588, guid: 9f818d502d5d4dc418315c9be029d373, type: 3}
+      propertyPath: sounds.Array.data[6].volume
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3484641936366793589, guid: 9f818d502d5d4dc418315c9be029d373, type: 3}
       propertyPath: m_RootOrder
       value: 8

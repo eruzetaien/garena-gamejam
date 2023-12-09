@@ -144,7 +144,7 @@ public class Dumpling : MonoBehaviour
 
     private void Fall()
     {
-        if (OnGround() && Input.GetKey(KeyCode.S) )
+        if (!OnGround() && Input.GetKey(KeyCode.S) )
         {
             playerRb.velocity = new Vector2(playerRb.velocity.x, -fallPower);
         }
