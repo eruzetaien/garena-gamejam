@@ -31,6 +31,7 @@ public class Dumpling : MonoBehaviour
     [SerializeField] private float rightCheckRadius = 0.1f;
 
     private Vector3 lastCheckpointPos;
+    private bool active;
 
     enum ChickenState
     {
@@ -48,21 +49,42 @@ public class Dumpling : MonoBehaviour
         playerColl = GetComponent<BoxCollider2D>();
 
         lastCheckpointPos = transform.position;
+        active = true;
+
+        StartCoroutine(Tabrak());
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (OnTabrak())
-        {
-            transform.position = lastCheckpointPos;
-        }
+
     }
 
     private void FixedUpdate()
     {
-        Jump();
-        RightMovement();
+        if (active)
+        {
+            Jump();
+            RightMovement();
+        }
+    }
+    IEnumerator Tabrak()
+    {
+        active = false;
+        IncreaseChickenBy(-10);
+        playerRb.velocity = new Vector2(-5, 5);
+
+        yield return new WaitForSeconds(1f);
+
+        active = true;
+        playerRb.velocity = Vector2.zero;
+        playerRb.position = lastCheckpointPos;
+
+        yield return new WaitUntil(() => OnTabrak());
+
+        StartCoroutine(Tabrak());
     }
 
     private void RightMovement()
@@ -100,10 +122,10 @@ public class Dumpling : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.CompareTag("Chicken"))
+        if (col.gameObject.CompareTag("Chicken") && active)
         {
             Destroy(col.gameObject);
-            EatChicken();
+            IncreaseChickenBy(1);
 
         } else if (col.gameObject.CompareTag("Checkpoint"))
         {
@@ -112,29 +134,32 @@ public class Dumpling : MonoBehaviour
         }
     }
 
-    private void EatChicken()
+    private void IncreaseChickenBy(int amount)
     {
-        if (totalChicken == MAX_CHICKEN_STATE_3){return;}
-        
-        totalChicken++;
-        
+        totalChicken += amount;
+
+        totalChicken = Mathf.Clamp(totalChicken, 0, MAX_CHICKEN_STATE_3);
+
         if (totalChicken > MAX_CHICKEN_STATE_2)
         {
             chickenState = ChickenState.STATE_3;
-            transform.localScale = new Vector3(3f,3f,0);
+            transform.localScale = new Vector3(3f, 3f, 0);
+            rightCheckRadius = 0.5f;
         }
         else if (totalChicken > MAX_CHICKEN_STATE_1)
         {
             chickenState = ChickenState.STATE_2;
-            transform.localScale = new Vector3(2f, 2f,0);
+            transform.localScale = new Vector3(2f, 2f, 0);
+            rightCheckRadius = 0.3f;
         }
         else
         {
             chickenState = ChickenState.STATE_1;
-            transform.localScale = new Vector3(1f,1f,0);
+            transform.localScale = new Vector3(1f, 1f, 0);
+            rightCheckRadius = 0.1f;
         }
 
-        chickenSlider1.value = totalChicken ;
+        chickenSlider1.value = totalChicken;
         chickenSlider2.value = totalChicken - 10;
         chickenSlider3.value = totalChicken - 20;
     }
