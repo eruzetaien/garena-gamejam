@@ -391,12 +391,19 @@ MonoBehaviour:
   decorations:
   - prefab: {fileID: 7353909985497659993, guid: e13fd2f9e11caba44995a52dcdf3d22b, type: 3}
     width: 3
+  - prefab: {fileID: 7353909985497659993, guid: 5b125f69fc9180e469f6100f8b3a8a78, type: 3}
+    width: 2
+  - prefab: {fileID: 7353909985497659993, guid: 7a39b8f5c41186542b5e930ca239da50, type: 3}
+    width: 2
+  - prefab: {fileID: 2094003482742635994, guid: 28ed35c16b3f40443b5467c6e489e69a, type: 3}
+    width: 1
   - prefab: {fileID: 4994557641012428524, guid: 21f8f7625e8319e4dadca2fbe210790e, type: 3}
     width: 1
   - prefab: {fileID: 5132871451888804279, guid: a680087911a398949a3c55c059d5f91e, type: 3}
     width: 1
   - prefab: {fileID: 5980630855062630711, guid: 46e24319eacf7f2468e4dab29658aa72, type: 3}
     width: 1
+  decorRarity: 2
   buildingXDistance: 4
   buildingYDistance: 3
 --- !u!4 &1465162158

@@ -10,7 +10,7 @@ public class Dumpling : MonoBehaviour
     [SerializeField] private float jumpPower = 9.0f;
     [SerializeField] private LayerMask groundLayer;
     
-    [SerializeField] private int totalChicken = 0;
+    private int totalChicken = 0;
     private BoxCollider2D playerColl;
     private Rigidbody2D playerRb;
     
@@ -22,12 +22,19 @@ public class Dumpling : MonoBehaviour
     [SerializeField] private Slider chickenSlider2;
     [SerializeField] private Slider chickenSlider3;
 
+
+    [SerializeField] private Transform rightCheck;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float rightCheckRadius = 0.1f;
+
+    private Vector3 lastCheckpointPos;
+    private bool active;
+
     enum ChickenState
     {
         STATE_1,
         STATE_2,
         STATE_3
-
     }
     
     private ChickenState chickenState = ChickenState.STATE_1;
@@ -37,11 +44,13 @@ public class Dumpling : MonoBehaviour
     {
         playerRb = GetComponent<Rigidbody2D>();
         playerColl = GetComponent<BoxCollider2D>();
-        
-                
-        totalChicken = 13;
-        
-        UpdateState();
+
+        lastCheckpointPos = transform.position;
+        active = true;
+
+        StartCoroutine(Tabrak());
+
+
     }
 
     // Update is called once per frame
@@ -54,6 +63,22 @@ public class Dumpling : MonoBehaviour
     {
         Jump();
         RightMovement();
+    }
+    IEnumerator Tabrak()
+    {
+        active = false;
+        IncreaseChickenBy(-10);
+        playerRb.velocity = new Vector2(-5, 5);
+
+        yield return new WaitForSeconds(1f);
+
+        active = true;
+        playerRb.velocity = Vector2.zero;
+        playerRb.position = lastCheckpointPos;
+
+        yield return new WaitUntil(() => OnTabrak());
+
+        StartCoroutine(Tabrak());
     }
 
     private void RightMovement()
@@ -72,8 +97,18 @@ public class Dumpling : MonoBehaviour
     bool OnGround() {
         float distance = 0.1f;
 
-        RaycastHit2D hit = Physics2D.BoxCast(playerColl.bounds.center, playerColl.bounds.size, 0f, Vector2.down, distance, groundLayer);
-        if (hit.collider != null) {
+        //RaycastHit2D hit = Physics2D.BoxCast(playerColl.bounds.center, playerColl.bounds.size, 0f, Vector2.down, distance, groundLayer);
+        Collider2D a = Physics2D.OverlapCircle(groundCheck.position, distance, groundLayer);
+        if (a != null) {
+            return true;
+        }
+        return false;
+    }
+
+    bool OnTabrak()
+    {
+        if (Physics2D.OverlapCircle(rightCheck.position, rightCheckRadius, groundLayer) != null)
+        {
             return true;
         }
         return false;
@@ -81,63 +116,50 @@ public class Dumpling : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.CompareTag("Chicken"))
+        if (col.gameObject.CompareTag("Chicken") && active)
         {
             Destroy(col.gameObject);
-            EatChicken();
-        }
-    }
+            IncreaseChickenBy(1);
 
-    private void OnCollisionEnter2D(Collision2D col)
-    {
-        if (col.gameObject.CompareTag("Human"))
+        } else if (col.gameObject.CompareTag("Checkpoint"))
         {
-          TakeDamage(col.gameObject.GetComponent<Human>().getDamage());  
+            lastCheckpointPos = col.transform.position;
+
         }
-
-    }
-    
-    private void TakeDamage(int damage)
-    {
-         totalChicken -= damage;
-         
-         if (totalChicken < 0)
-         {
-             totalChicken = 0;
-         }
-         
-         UpdateState();
     }
 
-    private void EatChicken()
+    private void IncreaseChickenBy(int amount)
     {
-        if (totalChicken == MAX_CHICKEN_STATE_3){return;}
-        
-        totalChicken++;
-        
-        UpdateState();
-    }
+        totalChicken += amount;
 
-    private void UpdateState()
-    {
+        totalChicken = Mathf.Clamp(totalChicken, 0, MAX_CHICKEN_STATE_3);
+
         if (totalChicken > MAX_CHICKEN_STATE_2)
         {
             chickenState = ChickenState.STATE_3;
-            transform.localScale = new Vector3(2f,2f,0);
+            transform.localScale = new Vector3(3f, 3f, 0);
+            rightCheckRadius = 0.5f;
         }
         else if (totalChicken > MAX_CHICKEN_STATE_1)
         {
             chickenState = ChickenState.STATE_2;
-            transform.localScale = new Vector3(1.5f,1.5f,0);
+            transform.localScale = new Vector3(2f, 2f, 0);
+            rightCheckRadius = 0.3f;
         }
         else
         {
             chickenState = ChickenState.STATE_1;
-            transform.localScale = new Vector3(1f,1f,0);
+            transform.localScale = new Vector3(1f, 1f, 0);
+            rightCheckRadius = 0.1f;
         }
 
-        chickenSlider1.value = totalChicken ;
+        chickenSlider1.value = totalChicken;
         chickenSlider2.value = totalChicken - 10;
         chickenSlider3.value = totalChicken - 20;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(rightCheck.position, rightCheckRadius);
     }
 }
