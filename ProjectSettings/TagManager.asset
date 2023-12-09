@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Chicken
   - Checkpoint
+  - Human
   layers:
   - Default
   - TransparentFX

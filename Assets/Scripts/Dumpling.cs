@@ -155,7 +155,14 @@ public class Dumpling : MonoBehaviour
 
         //RaycastHit2D hit = Physics2D.BoxCast(playerColl.bounds.center, playerColl.bounds.size, 0f, Vector2.down, distance, groundLayer);
         Collider2D a = Physics2D.OverlapCircle(groundCheck.position, distance, groundLayer);
+
+
+        
+
         if (a != null) {
+            if (!animator.GetBool("isGrounded")){
+                SoundManager.soundManager.Play("land");
+            }
             animator.SetBool("isGrounded", true);
             return true;
         }
