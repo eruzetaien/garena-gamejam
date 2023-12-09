@@ -4555,6 +4555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a9b470bcc5c8f94ca9d1375f1dc7b4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  smoothTime: 0.25
 --- !u!1001 &1676576661
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5490,6 +5491,12 @@ MonoBehaviour:
   chicken: {fileID: 6171084383481913621, guid: 5cc222b9e3da035489861d7e59e11366, type: 3}
   chickenConsequtive: 5
   chickenRarity: 6
+  child: {fileID: 0}
+  adult: {fileID: 0}
+  chef: {fileID: 0}
+  chefInterval: 100
+  humanRarity: 5
+  adultRarity: 4
   player: {fileID: 52009549}
   checkpoint: {fileID: 4712437860960436799, guid: 32a714394410bd746ac6666526fac538, type: 3}
 --- !u!4 &1948883765
@@ -5830,11 +5837,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5562782661550882644, guid: b787e5c31f59bb14fa0b89a071b0d079, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.85
+      value: 15.65
       objectReference: {fileID: 0}
     - target: {fileID: 5562782661550882644, guid: b787e5c31f59bb14fa0b89a071b0d079, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.34
+      value: 2.29
       objectReference: {fileID: 0}
     - target: {fileID: 5562782661550882644, guid: b787e5c31f59bb14fa0b89a071b0d079, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5880,5 +5887,13 @@ PrefabInstance:
       propertyPath: chickenSlider3
       value: 
       objectReference: {fileID: 853588095}
+    - target: {fileID: 7273963928386166585, guid: b787e5c31f59bb14fa0b89a071b0d079, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7273963928386166585, guid: b787e5c31f59bb14fa0b89a071b0d079, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.data[3]
+      value: -1337353257
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b787e5c31f59bb14fa0b89a071b0d079, type: 3}

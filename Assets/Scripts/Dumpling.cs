@@ -45,6 +45,16 @@ public class Dumpling : MonoBehaviour
     [SerializeField] private AnimatorOverrideController phase2Controller;
     [SerializeField] private AnimatorOverrideController phase3Controller;
 
+    // Cam shake
+    private Animator camAnim;
+
+    private bool isGrounded;
+
+
+    // eating animation
+    private float lengthAfterEat = 0.1f;
+    private float eatTimer;
+
     enum ChickenState
     {
         STATE_1,
@@ -60,6 +70,7 @@ public class Dumpling : MonoBehaviour
         playerRb = GetComponent<Rigidbody2D>();
         playerColl = GetComponent<CircleCollider2D>();
         animator = GetComponentInChildren<Animator>();
+        camAnim = Camera.main.GetComponent<Animator>();
 
         lastCheckpointPos = transform.position;
         active = true;
@@ -67,12 +78,13 @@ public class Dumpling : MonoBehaviour
         StartCoroutine(Tabrak());
         ShowPlayer();
         
-        IncreaseChickenBy(5);
+        IncreaseChickenBy(9);
     }
 
     // Update is called once per frame
     void Update()
     {
+        // decrease hunger
         timer -= Time.deltaTime;
         if (timer < 0 && active)
         {
@@ -81,10 +93,27 @@ public class Dumpling : MonoBehaviour
             RefreshState();
         }
         animator.SetFloat("yVelocity", playerRb.velocity.y);
+
+
+        // eating animation
+        eatTimer -= Time.deltaTime;
+        if (eatTimer < 0)
+        {
+            animator.SetBool("isEating", false);
+        }
+        else
+        {
+            if (!animator.GetBool("isEating"))
+            {
+                animator.Play("Phase1_eat");
+            }
+            animator.SetBool("isEating", true);
+        }
     }
 
     private void FixedUpdate()
     {
+        isGrounded = OnGround();
         if (active)
         {
             RightMovement();
@@ -102,7 +131,6 @@ public class Dumpling : MonoBehaviour
 
         SoundManager.soundManager.Play("hurt");
 
-        yield return new WaitUntil(() => OnTabrak());
 
         yield return StartCoroutine(Respawn(10, true));
         
@@ -113,6 +141,8 @@ public class Dumpling : MonoBehaviour
     {
         active = false;
         IncreaseChickenBy(-damage);
+        camAnim.SetTrigger("shake");
+
         playerRb.velocity = Vector2.zero;
         if (onCheckPoint)
         {
@@ -133,7 +163,6 @@ public class Dumpling : MonoBehaviour
 
         active = true;
         playerRb.velocity = Vector2.zero;
-        playerRb.position = lastCheckpointPos;
 
         animator.SetTrigger("respawn");
     
@@ -151,7 +180,7 @@ public class Dumpling : MonoBehaviour
 
     private void Jump()
     {
-        if (OnGround() && (Input.GetKey(KeyCode.W)) )
+        if (isGrounded && (Input.GetKey(KeyCode.W)) )
         {
             SoundManager.soundManager.Play("jump");
             playerRb.velocity = new Vector2(playerRb.velocity.x, jumpPower);
@@ -160,7 +189,7 @@ public class Dumpling : MonoBehaviour
 
     private void Fall()
     {
-        if (!OnGround() && Input.GetKey(KeyCode.S) )
+        if (!isGrounded && Input.GetKey(KeyCode.S) )
         {
             playerRb.velocity = new Vector2(playerRb.velocity.x, -fallPower);
         }
@@ -176,7 +205,20 @@ public class Dumpling : MonoBehaviour
         
 
         if (a != null) {
-            if (!animator.GetBool("isGrounded")){
+            if (!isGrounded){
+                switch (chickenState)
+                {
+                    case ChickenState.STATE_1:
+                        camAnim.SetTrigger("lightShake");
+                        break;
+                    case ChickenState.STATE_2:
+                        camAnim.SetTrigger("shake");
+                        break;
+                    case ChickenState.STATE_3:
+                        camAnim.SetTrigger("heavyShake");
+                        break;
+
+                }
                 SoundManager.soundManager.Play("land");
             }
             animator.SetBool("isGrounded", true);
@@ -195,10 +237,31 @@ public class Dumpling : MonoBehaviour
         return false;
     }
 
+    private void BiteSfx()
+    {
+        switch (chickenState)
+        {
+            case ChickenState.STATE_1:
+                eatTimer = lengthAfterEat;
+                SoundManager.soundManager.Play("bite1");
+                break;
+            case ChickenState.STATE_2:
+                eatTimer = lengthAfterEat;
+                SoundManager.soundManager.Play("bite2");
+                break;
+            case ChickenState.STATE_3:
+                eatTimer = lengthAfterEat;
+                SoundManager.soundManager.Play("bite3");
+                break;
+        }
+
+    }
+
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.CompareTag("Chicken") && active)
         {
+            BiteSfx();
             Destroy(col.gameObject);
             IncreaseChickenBy(1);
             RefreshState();
@@ -219,6 +282,7 @@ public class Dumpling : MonoBehaviour
                     }
                     else
                     {
+                        BiteSfx();
                         Destroy(col.gameObject);
                         GameManager.Singleton.AddScore(50);
                     }
@@ -231,6 +295,7 @@ public class Dumpling : MonoBehaviour
                     }
                     else
                     {
+                        BiteSfx();
                         Destroy(col.gameObject);
                         GameManager.Singleton.AddScore(100);
                     }
@@ -243,6 +308,7 @@ public class Dumpling : MonoBehaviour
                         StartCoroutine(Respawn(20,false));
                         break;
                     }
+
 
                     StartCoroutine(ButtonRush());
                     break;
@@ -263,6 +329,7 @@ public class Dumpling : MonoBehaviour
         active = true;
         
         int pressedCount = GameManager.Singleton.DeactivateButtonRushPhase();
+        SoundManager.soundManager.Play("explosion");
         if (pressedCount < 25)
         {
             yield return StartCoroutine(Respawn(20,false));

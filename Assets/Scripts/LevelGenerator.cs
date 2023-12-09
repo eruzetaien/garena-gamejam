@@ -88,11 +88,12 @@ public class LevelGenerator : MonoBehaviour
 
 
         // spawn checkpoin
-        Instantiate(checkpoint, pos + Vector3Int.up * 2, Quaternion.identity);
+        GameObject c = Instantiate(checkpoint, pos + Vector3Int.up * 2, Quaternion.identity);
+        c.transform.SetParent(room);
 
 
         // instantiate decorations
-        for (int j = 0; j < building.width - 2;)
+        for (int j = 1; j < building.width - 2;)
         {
             // spawn decor
             Building decoration = decorations[Random.Range(0, decorations.Length)];
@@ -102,21 +103,21 @@ public class LevelGenerator : MonoBehaviour
                 u.SetParent(room);
             }
 
-            j += building.width;
+            j += decoration.width;
         }
 
-        // instantiate chicken
-        for (int j = 0; j < building.width; j++)
+        // instantiate human
+        for (int j = 5; j < building.width; j++)
         {
             progress++;
 
-            if ((progress <= 0 || progress < prevHuman + 10) && progress % chefInterval != 0)
+            if ((progress <= 0 || progress < prevHuman + 10) && progress % chefInterval != 30)
             {
                 // nothing happen
 
             } else {
                 // spawn human
-                if (progress % chefInterval == 0)
+                if (progress % chefInterval == 30)
                 {
                     // spawn chef
                     Transform u = Instantiate(chef, pos + Vector3Int.right * j + Vector3Int.up, Quaternion.identity).transform;

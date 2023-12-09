@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DefaultNamespace;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.Universal.Internal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -55,6 +56,7 @@ public class GameManager : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.S) )
                 {
+                    Camera.main.GetComponent<Animator>().SetTrigger("heavyShake");
                     pressCount++;
                     pressCountSlider.value = pressCount;
                     isUpButtomPressed = false;
@@ -64,6 +66,7 @@ public class GameManager : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.W) )
                 {
+                    Camera.main.GetComponent<Animator>().SetTrigger("heavyShake");
                     pressCount++;
                     pressCountSlider.value = pressCount;
                     isUpButtomPressed = true;
