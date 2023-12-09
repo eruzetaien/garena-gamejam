@@ -83,7 +83,7 @@ public class LevelGenerator : MonoBehaviour
             Building decoration = decorations[Random.Range(0, decorations.Length)];
             if (Random.Range(0, decorRarity) == 0)
             {
-                Transform u = Instantiate(decoration.prefab, pos + Vector3Int.right * j + Vector3Int.up, Quaternion.identity).transform;
+                Transform u = Instantiate(decoration.prefab, pos + Vector3Int.right * j + Vector3.up / 2, Quaternion.identity).transform;
                 u.SetParent(room);
             }
 
