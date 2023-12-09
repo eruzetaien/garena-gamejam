@@ -1048,7 +1048,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 25
+  m_MaxValue: 20
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -7606,11 +7606,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreScreen: {fileID: 688121534}
-  timeScore: {fileID: 1026158817}
-  eatScoreTM: {fileID: 1683092729}
-  eatHighScoreTM: {fileID: 379776998}
+  scoreInGameTM: {fileID: 0}
+  scoreTM: {fileID: 0}
+  highScoreTM: {fileID: 0}
   buttonRushScreen: {fileID: 89851251}
   pressCountSlider: {fileID: 316620680}
+  pauseMenu: {fileID: 0}
   highScore: {fileID: 11400000, guid: 50cd702c430a75343a1138bf2e21b89d, type: 2}
 --- !u!114 &2103296116
 MonoBehaviour:

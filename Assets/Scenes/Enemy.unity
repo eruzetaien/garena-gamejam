@@ -3241,7 +3241,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 25
+  m_MaxValue: 20
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -5548,6 +5548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a9b470bcc5c8f94ca9d1375f1dc7b4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  smoothTime: 0.25
 --- !u!1001 &1676576661
 PrefabInstance:
   m_ObjectHideFlags: 0
