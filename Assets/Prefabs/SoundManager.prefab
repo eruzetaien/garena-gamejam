@@ -48,19 +48,19 @@ MonoBehaviour:
   sounds:
   - name: bite1
     clip: {fileID: 8300000, guid: 4790fadd78bb1004080bce652d6fdf75, type: 3}
-    volume: 0.359
+    volume: 0.293
   - name: bite2
     clip: {fileID: 8300000, guid: 48eb8f6757803304aa4f8cbe718e7470, type: 3}
-    volume: 0.463
+    volume: 0.348
   - name: bite3
     clip: {fileID: 8300000, guid: 1981cd8352b970e418fd629293888cae, type: 3}
-    volume: 0.502
+    volume: 0.276
   - name: jump
     clip: {fileID: 8300000, guid: 42464509d10c7814ba7fe261b2d0c37e, type: 3}
     volume: 0.112
   - name: bgm
     clip: {fileID: 8300000, guid: d40f1add564244b42bb989e8c1fec550, type: 3}
-    volume: 1
+    volume: 0.66
   - name: hurt
     clip: {fileID: 8300000, guid: 6b419e2d6eea561499f922f4e7c8c744, type: 3}
     volume: 1
@@ -69,5 +69,11 @@ MonoBehaviour:
     volume: 0.458
   - name: explosion
     clip: {fileID: 8300000, guid: f62c85df6b8b5904a82211730e783a86, type: 3}
+    volume: 0.589
+  - name: mm
+    clip: {fileID: 8300000, guid: e325fe3789eb3f14fb4f04b9ec3b7eee, type: 3}
     volume: 1
+  - name: powerup
+    clip: {fileID: 8300000, guid: e2f389a1bce00e645a01a1b680cb66b2, type: 3}
+    volume: 0.436
   audioSources: []

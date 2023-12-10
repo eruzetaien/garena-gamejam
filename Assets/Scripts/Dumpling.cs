@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -42,7 +41,7 @@ public class Dumpling : MonoBehaviour
 
     // Animation
     private Animator animator;
-    [SerializeField] private AnimatorController phase1Controller;
+    [SerializeField] private RuntimeAnimatorController phase1Controller;
     [SerializeField] private AnimatorOverrideController phase2Controller;
     [SerializeField] private AnimatorOverrideController phase3Controller;
 
@@ -281,6 +280,7 @@ public class Dumpling : MonoBehaviour
                 case Human.HumanType.Child :
                     if (chickenState == ChickenState.STATE_1)
                     {
+                        SoundManager.soundManager.Play("hurt");
                         StartCoroutine(Respawn(10,false));
                     }
                     else
@@ -289,12 +289,15 @@ public class Dumpling : MonoBehaviour
                         Destroy(col.gameObject);
                         GameManager.Singleton.AddScore(50);
                         SpawnScore("50");
+                        IncreaseChickenBy(1);
+                        RefreshState();
                     }
                     break;
                 case Human.HumanType.Adult :
                     if (chickenState == ChickenState.STATE_1 ||
                         chickenState == ChickenState.STATE_2)
                     {
+                        SoundManager.soundManager.Play("hurt");
                         StartCoroutine(Respawn(10,false));
                     }
                     else
@@ -303,6 +306,8 @@ public class Dumpling : MonoBehaviour
                         Destroy(col.gameObject);
                         GameManager.Singleton.AddScore(100);
                         SpawnScore("100");
+                        IncreaseChickenBy(2);
+                        RefreshState();
                     }
 
                     break;
@@ -342,6 +347,8 @@ public class Dumpling : MonoBehaviour
             GameManager.Singleton.DeactivateButtonRushPhase();
             SoundManager.soundManager.Play("explosion");
             Destroy(chef);
+            IncreaseChickenBy(5);
+            RefreshState();
             GameManager.Singleton.AddScore(150);
             SpawnScore("150");
             SpawnScore("NICEEE", true);
@@ -383,6 +390,10 @@ public class Dumpling : MonoBehaviour
     {
         if (totalChicken > MAX_CHICKEN_STATE_2)
         {
+            if (chickenState != ChickenState.STATE_3)
+            {
+                SoundManager.soundManager.Play("powerup");
+            }
             chickenState = ChickenState.STATE_3;
 
             animator.runtimeAnimatorController = phase3Controller;
@@ -397,6 +408,10 @@ public class Dumpling : MonoBehaviour
         }
         else if (totalChicken > MAX_CHICKEN_STATE_1)
         {
+            if (chickenState == ChickenState.STATE_1)
+            {
+                SoundManager.soundManager.Play("powerup");
+            }
             chickenState = ChickenState.STATE_2;
 
             animator.runtimeAnimatorController = phase2Controller;

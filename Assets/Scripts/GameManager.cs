@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Animator buttonRushAnimator;
     
     [SerializeField] private Slider pressCountSlider;
-    private bool isButtonRushActive = false;
+    public bool isButtonRushActive = false;
     private int pressCount = 0;
     private const int baseTargetPressCount = 15;
     private const int baseTargetPressCount_next = 25;
@@ -32,6 +32,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private HighScore highScore;
     private int score;
+
+    // WS
+    [SerializeField] private GameObject ws;
 
     public void Awake()
     {
@@ -55,8 +58,12 @@ public class GameManager : MonoBehaviour
     void Update () {
         if (isButtonRushActive)
         {
+            ws.SetActive(true);
+
             if (isUpButtomPressed)
             {
+                ws.GetComponent<TMP_Text>().text = "S";
+
                 if (Input.GetKeyDown(KeyCode.S) )
                 {
                     Camera.main.GetComponent<Animator>().SetTrigger("heavyShake");
@@ -68,6 +75,8 @@ public class GameManager : MonoBehaviour
             }
             else
             {
+                ws.GetComponent<TMP_Text>().text = "W";
+
                 if (Input.GetKeyDown(KeyCode.W) )
                 {
                     Camera.main.GetComponent<Animator>().SetTrigger("heavyShake");
@@ -77,6 +86,12 @@ public class GameManager : MonoBehaviour
                     isUpButtomPressed = true;
                 }
             }
+
+
+        }
+        else
+        {
+            ws.SetActive(false);
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
