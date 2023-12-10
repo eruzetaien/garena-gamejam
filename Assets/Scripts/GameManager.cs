@@ -17,13 +17,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI highScoreTM;
 
     [SerializeField] private GameObject buttonRushScreen;
+    [SerializeField] private Animator buttonRushAnimator;
+    
     [SerializeField] private Slider pressCountSlider;
     private bool isButtonRushActive = false;
     private int pressCount = 0;
-    private const int baseTargetPressCount = 20;
-    private const int baseTargetPressCount_next = 30;
+    private const int baseTargetPressCount = 15;
+    private const int baseTargetPressCount_next = 25;
     private int targetPressCount;
     private bool isUpButtomPressed;
+    
 
     [SerializeField] private GameObject pauseMenu;
 
@@ -125,10 +128,20 @@ public class GameManager : MonoBehaviour
         buttonRushScreen.SetActive(true);
     }
     
-    public bool DeactivateButtonRushPhase()
+    public void DeactivateButtonRushPhase()
     {
         isButtonRushActive = false;
         buttonRushScreen.SetActive(false);
+        // return IsButtonRushSuccess();
+    }
+    
+    public void PlaySuccessAnimation()
+    {
+        buttonRushAnimator.SetTrigger("success");
+    }
+    
+    public bool IsButtonRushSuccess()
+    {
         return pressCount >= targetPressCount;
     }
 

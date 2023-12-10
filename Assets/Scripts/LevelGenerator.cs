@@ -127,7 +127,7 @@ public class LevelGenerator : MonoBehaviour
                 else if (Random.Range(0, adultRarity) == 0)
                 {
                     // spawn adult
-                    Transform u = Instantiate(adult, pos + Vector3Int.right * j + Vector3.up *1.5f, Quaternion.identity).transform;
+                    Transform u = Instantiate(adult, pos + Vector3Int.right * j + Vector3.up *1.2f, Quaternion.identity).transform;
                     u.SetParent(room);
 
                 }
