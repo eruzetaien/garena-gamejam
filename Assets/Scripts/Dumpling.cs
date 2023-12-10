@@ -25,9 +25,9 @@ public class Dumpling : MonoBehaviour
     private const  int MAX_CHICKEN_STATE_2 = 20;
     private const  int MAX_CHICKEN_STATE_3 = 30;
     
-    [SerializeField] private Slider chickenSlider1;
-    [SerializeField] private Slider chickenSlider2;
-    [SerializeField] private Slider chickenSlider3;
+    [SerializeField] private DumplingSlider chickenSlider1;
+    [SerializeField] private DumplingSlider chickenSlider2;
+    [SerializeField] private DumplingSlider chickenSlider3;
 
 
     [SerializeField] private Transform rightCheck;
@@ -88,7 +88,7 @@ public class Dumpling : MonoBehaviour
         // decrease hunger
         timer -= Time.deltaTime;
         if (timer < 0 && active && 
-            (totalChicken != MAX_CHICKEN_STATE_1 + 1 || totalChicken != MAX_CHICKEN_STATE_2 + 1 ) 
+            (totalChicken != MAX_CHICKEN_STATE_1 + 1 && totalChicken != MAX_CHICKEN_STATE_2 + 1 ) 
             )
         {
             timer = hungerDecreaseRate;
@@ -426,9 +426,9 @@ public class Dumpling : MonoBehaviour
             rightCheckRadius = 0.1f;
         }
 
-        chickenSlider1.value = totalChicken;
-        chickenSlider2.value = totalChicken - 10;
-        chickenSlider3.value = totalChicken - 20;
+        chickenSlider1.SetValue(totalChicken);
+        chickenSlider2.SetValue(totalChicken - 10);
+        chickenSlider3.SetValue(totalChicken - 20);
         
         if (totalChicken <= 0)
         {
