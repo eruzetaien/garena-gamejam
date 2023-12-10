@@ -479,6 +479,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 89851252}
+  - component: {fileID: 89851253}
   m_Layer: 5
   m_Name: Button Rush
   m_TagString: Untagged
@@ -508,6 +509,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &89851253
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89851251}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3606790dd695a8642b0804c754993f41, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &95082418
 GameObject:
   m_ObjectHideFlags: 0
@@ -593,7 +614,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2103296115}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: ResumeGame
+        m_MethodName: PauseGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5354,10 +5375,10 @@ RectTransform:
   m_Father: {fileID: 89851252}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 1054.0554, y: 1011.0345}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1299369611
 MonoBehaviour:
@@ -5379,7 +5400,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9246,6 +9267,7 @@ MonoBehaviour:
   scoreTM: {fileID: 648316533}
   highScoreTM: {fileID: 1791428263}
   buttonRushScreen: {fileID: 89851251}
+  buttonRushAnimator: {fileID: 89851253}
   pressCountSlider: {fileID: 316620680}
   pauseMenu: {fileID: 1093143532}
   highScore: {fileID: 11400000, guid: 50cd702c430a75343a1138bf2e21b89d, type: 2}
@@ -9391,6 +9413,10 @@ PrefabInstance:
       propertyPath: eatScorePrefab
       value: 
       objectReference: {fileID: 220364658267722072, guid: dd9b1b70c763b6b48a52f21d98a09f37, type: 3}
+    - target: {fileID: 5562782661550882645, guid: b787e5c31f59bb14fa0b89a071b0d079, type: 3}
+      propertyPath: explosionPrefab
+      value: 
+      objectReference: {fileID: 8511176688288496240, guid: 7291b378254951443bcef781d98e5c15, type: 3}
     - target: {fileID: 5562782661550882645, guid: b787e5c31f59bb14fa0b89a071b0d079, type: 3}
       propertyPath: upgradeStateTransition
       value: 

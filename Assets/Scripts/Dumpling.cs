@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -14,6 +13,7 @@ public class Dumpling : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private SpriteRenderer playerSprite;
     [SerializeField] private GameObject eatScorePrefab;
+    [SerializeField] private GameObject explosionPrefab;
 
 
     private int totalChicken = 0;
@@ -41,7 +41,7 @@ public class Dumpling : MonoBehaviour
 
     // Animation
     private Animator animator;
-    [SerializeField] private AnimatorController phase1Controller;
+    [SerializeField] private RuntimeAnimatorController phase1Controller;
     [SerializeField] private AnimatorOverrideController phase2Controller;
     [SerializeField] private AnimatorOverrideController phase3Controller;
 
@@ -86,7 +86,9 @@ public class Dumpling : MonoBehaviour
     {
         // decrease hunger
         timer -= Time.deltaTime;
-        if (timer < 0 && active)
+        if (timer < 0 && active && 
+            (totalChicken != MAX_CHICKEN_STATE_1 + 1 || totalChicken != MAX_CHICKEN_STATE_2 + 1 ) 
+            )
         {
             timer = hungerDecreaseRate;
             IncreaseChickenBy(-1);
@@ -160,7 +162,7 @@ public class Dumpling : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
-        active = true;
+
         playerRb.velocity = Vector2.zero;
 
         animator.SetTrigger("respawn");
@@ -169,6 +171,7 @@ public class Dumpling : MonoBehaviour
         {
             playerRb.position = lastCheckpointPos;
         }
+        active = true;
 
     }
 
@@ -261,6 +264,8 @@ public class Dumpling : MonoBehaviour
             Destroy(col.gameObject);
             IncreaseChickenBy(1);
             RefreshState();
+            GameManager.Singleton.AddScore(1);
+            SpawnScore("1");
         
 
         } else if (col.gameObject.CompareTag("Checkpoint"))
@@ -283,7 +288,7 @@ public class Dumpling : MonoBehaviour
                         BiteSfx();
                         Destroy(col.gameObject);
                         GameManager.Singleton.AddScore(50);
-                        SpawnScore(50);
+                        SpawnScore("50");
                     }
                     break;
                 case Human.HumanType.Adult :
@@ -298,20 +303,13 @@ public class Dumpling : MonoBehaviour
                         BiteSfx();
                         Destroy(col.gameObject);
                         GameManager.Singleton.AddScore(100);
-                        SpawnScore(100);
+                        SpawnScore("100");
                     }
 
                     break;
 
                 case Human.HumanType.Chef :
-                    if (chickenState == ChickenState.STATE_1)
-                    {
-                        SoundManager.soundManager.Play("hurt");
-                        StartCoroutine(Respawn(20,false));
-                        break;
-                    }
-
-                    StartCoroutine(ButtonRush());
+                    StartCoroutine(ButtonRush(col.gameObject));
                     break;
                 default:
                     IncreaseChickenBy(-5);
@@ -320,26 +318,47 @@ public class Dumpling : MonoBehaviour
         }
     }
     
-    IEnumerator ButtonRush()
+    IEnumerator ButtonRush( GameObject chef)
     {
         active = false;
         playerRb.velocity = Vector2.zero;
-        float time = 3f;
-        GameManager.Singleton.ActivateButtonRushPhase();
-        yield return new WaitForSeconds(time);
-        active = true;
+        float duration = 3f;
+        float time = 0;
         
-        bool isSuccess = GameManager.Singleton.DeactivateButtonRushPhase();
-        SoundManager.soundManager.Play("explosion");
-        if (! isSuccess)
+        GameManager.Singleton.ActivateButtonRushPhase();
+        bool isButtonRushSuccess = false;
+        
+        while (time < duration && !GameManager.Singleton.IsButtonRushSuccess() )
         {
+            time += Time.deltaTime;
+            yield return null;
+        }
+        isButtonRushSuccess = GameManager.Singleton.IsButtonRushSuccess();
+        
+        if (isButtonRushSuccess)
+        {
+            GameManager.Singleton.PlaySuccessAnimation();
+            yield return new WaitForSeconds(1f);
+            Instantiate(explosionPrefab, chef.transform.position, Quaternion.identity);
+            GameManager.Singleton.DeactivateButtonRushPhase();
+            SoundManager.soundManager.Play("explosion");
+            Destroy(chef);
+            GameManager.Singleton.AddScore(150);
+            SpawnScore("150");
+            SpawnScore("NICEEE", true);
+            active = true;
+            Time.timeScale = 1f;
+        }
+        else
+        {
+            GameManager.Singleton.DeactivateButtonRushPhase();
+            SoundManager.soundManager.Play("explosion");
             yield return StartCoroutine(Respawn(10,false));
-        } 
+            active = true;
+            Time.timeScale = 1f;
+        }
 
-        Time.timeScale = 1f;
     }
-
-   
 
     private void HidePlayer()
     {
@@ -419,15 +438,15 @@ public class Dumpling : MonoBehaviour
         }
     }
 
-    private void SpawnScore(int score)
+    private void SpawnScore(string score,bool isText = false)
     {
-        float randomXoffset = Random.Range(-0.2f, 0.5f);
-        float randomYoffset = Random.Range(0f, 1f);
+        float randomXoffset = Random.Range(-0.5f, 1f);
+        float randomYoffset = Random.Range(1.5f, 2.5f);
 
         Vector3 spawnOffset = new Vector3(randomXoffset, randomYoffset, 0);
 
         GameObject eatScoreGO = Instantiate(eatScorePrefab, transform);
-        eatScoreGO.GetComponent<EatScore>().Init(score,spawnOffset);
+        eatScoreGO.GetComponent<EatScore>().Init(score,spawnOffset,isText);
     }
 
     private void OnDrawGizmosSelected()
