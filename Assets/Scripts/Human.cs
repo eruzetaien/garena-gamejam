@@ -7,7 +7,7 @@ using static Dumpling;
 
 public class Human : MonoBehaviour
 {
-    Light2D light2d;
+    [SerializeField] private SpriteRenderer glow;
     public enum HumanType
     {
         None = 0,
@@ -21,11 +21,11 @@ public class Human : MonoBehaviour
     
     public HumanType humanType = HumanType.None;
     Color defaultLightColor;
+
     void Start()
     {
-        light2d = GetComponent<Light2D>();
 
-        defaultLightColor = light2d.color;
+        defaultLightColor = glow.color;
 
         if (humanType == HumanType.Chef)
         {
@@ -53,12 +53,12 @@ public class Human : MonoBehaviour
                 if (chickenState == ChickenState.STATE_1)
                 {
                     // player kalah
-                    light2d.color = Color.red;
+                    glow.color = Color.red;
                 }
                 else
                 {
                     // player menang
-                    light2d.color = defaultLightColor;
+                    glow.color = defaultLightColor;
                 }
                 break;
             case HumanType.Adult:
@@ -66,12 +66,12 @@ public class Human : MonoBehaviour
                     chickenState == ChickenState.STATE_2)
                 {
                     // player kalah
-                    light2d.color = Color.red;
+                    glow.color = Color.red;
                 }
                 else
                 {
                     // player menang
-                    light2d.color = defaultLightColor;
+                    glow.color = defaultLightColor;
                 }
 
                 break;
@@ -79,7 +79,7 @@ public class Human : MonoBehaviour
             case HumanType.Chef:
 
                 // player kalah
-                light2d.color = Color.red;
+                glow.color = Color.red;
 
                 break;
         }
