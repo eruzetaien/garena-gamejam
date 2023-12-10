@@ -107,7 +107,7 @@ public class LevelGenerator : MonoBehaviour
         }
 
         // instantiate human
-        for (int j = 5; j < building.width; j++)
+        for (int j = 5; j < building.width - 3; j++)
         {
             progress++;
 
