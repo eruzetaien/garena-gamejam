@@ -28,7 +28,7 @@ public class UiMainMenu : MonoBehaviour
     
     public void Play()
     {
-        SceneManager.LoadScene("Player");
+        SceneManager.LoadScene("Cerita");
     }
     
     
