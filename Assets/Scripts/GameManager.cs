@@ -16,15 +16,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreTM;
     [SerializeField] private TextMeshProUGUI highScoreTM;
 
-    
     [SerializeField] private GameObject buttonRushScreen;
     [SerializeField] private Slider pressCountSlider;
     private bool isButtonRushActive = false;
     private int pressCount = 0;
+    private const int baseTargetPressCount = 20;
+    private const int baseTargetPressCount_next = 30;
+    private int targetPressCount;
     private bool isUpButtomPressed;
 
     [SerializeField] private GameObject pauseMenu;
-    
+
     [SerializeField] private HighScore highScore;
     private int score;
     private float secondTimer = 0f;   
@@ -57,7 +59,8 @@ public class GameManager : MonoBehaviour
                 {
                     Camera.main.GetComponent<Animator>().SetTrigger("heavyShake");
                     pressCount++;
-                    pressCountSlider.value = pressCount;
+                    pressCountSlider.value = (float) pressCount/targetPressCount;
+                    Debug.Log( (float) pressCount/targetPressCount);
                     isUpButtomPressed = false;
                 }
             }
@@ -67,7 +70,8 @@ public class GameManager : MonoBehaviour
                 {
                     Camera.main.GetComponent<Animator>().SetTrigger("heavyShake");
                     pressCount++;
-                    pressCountSlider.value = pressCount;
+                    pressCountSlider.value = (float) pressCount/targetPressCount;
+                    Debug.Log( (float) pressCount/targetPressCount);
                     isUpButtomPressed = true;
                 }
             }
@@ -105,18 +109,27 @@ public class GameManager : MonoBehaviour
 
     public void ActivateButtonRushPhase()
     {
+        if (score <= 1000)
+        {
+            targetPressCount = baseTargetPressCount + (int) (score / 100);
+        }
+        else
+        {
+            targetPressCount = baseTargetPressCount_next + (score/1000);
+        }
+
         pressCount = 0;
-        pressCountSlider.value = pressCount;
+        pressCountSlider.value = 0;
         
         isButtonRushActive = true;
         buttonRushScreen.SetActive(true);
     }
     
-    public int DeactivateButtonRushPhase()
+    public bool DeactivateButtonRushPhase()
     {
         isButtonRushActive = false;
         buttonRushScreen.SetActive(false);
-        return pressCount;
+        return pressCount >= targetPressCount;
     }
 
     public void AddTimeScore()

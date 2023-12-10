@@ -15,13 +15,11 @@ public class Dumpling : MonoBehaviour
     [SerializeField] private SpriteRenderer playerSprite;
     [SerializeField] private GameObject eatScorePrefab;
 
-    
+
     private int totalChicken = 0;
     private CircleCollider2D playerColl;
     private Rigidbody2D playerRb;
 
-
-    
     private const  int MAX_CHICKEN_STATE_1 = 10;
     private const  int MAX_CHICKEN_STATE_2 = 20;
     private const  int MAX_CHICKEN_STATE_3 = 30;
@@ -149,10 +147,9 @@ public class Dumpling : MonoBehaviour
         if (onCheckPoint)
         {
             playerRb.velocity = new Vector2(-5, 5);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
         }
-
-
+        
 
         // respawn
         RefreshState();
@@ -160,7 +157,7 @@ public class Dumpling : MonoBehaviour
         if (! onCheckPoint)
         {
             playerRb.velocity = new Vector2(10, 5);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
         }
 
         active = true;
@@ -202,10 +199,7 @@ public class Dumpling : MonoBehaviour
 
         //RaycastHit2D hit = Physics2D.BoxCast(playerColl.bounds.center, playerColl.bounds.size, 0f, Vector2.down, distance, groundLayer);
         Collider2D a = Physics2D.OverlapCircle(groundCheck.position, distance, groundLayer);
-
-
         
-
         if (a != null) {
             if (!isGrounded){
                 switch (chickenState)
@@ -267,6 +261,7 @@ public class Dumpling : MonoBehaviour
             Destroy(col.gameObject);
             IncreaseChickenBy(1);
             RefreshState();
+        
 
         } else if (col.gameObject.CompareTag("Checkpoint"))
         {
@@ -330,18 +325,17 @@ public class Dumpling : MonoBehaviour
         yield return new WaitForSeconds(time);
         active = true;
         
-        int pressedCount = GameManager.Singleton.DeactivateButtonRushPhase();
+        bool isSuccess = GameManager.Singleton.DeactivateButtonRushPhase();
         SoundManager.soundManager.Play("explosion");
-        if (pressedCount < 20)
-        {
-            yield return StartCoroutine(Respawn(20,false));
-        } else
+        if (! isSuccess)
         {
             yield return StartCoroutine(Respawn(10,false));
-        }
+        } 
 
         Time.timeScale = 1f;
     }
+
+   
 
     private void HidePlayer()
     {
