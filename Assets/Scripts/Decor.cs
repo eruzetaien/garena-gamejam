@@ -36,14 +36,14 @@ public class Decor : MonoBehaviour
                     power = 1;
                     break;
                 case Dumpling.ChickenState.STATE_2:
-                    power = 1.5f;
+                    power = 3f;
                     break;
                 case Dumpling.ChickenState.STATE_3:
-                    power = 2.5f;
+                    power = 6f;
                     break;
             }
             rb.AddForce(new Vector2(Random.Range(1, 2 * power), Random.Range(1, power)), ForceMode2D.Impulse);
-            rb.AddTorque(Random.Range(0, -45));
+            rb.AddTorque(Random.Range(0, -15 * power));
 
             gameObject.layer = LayerMask.NameToLayer("Decor");
 

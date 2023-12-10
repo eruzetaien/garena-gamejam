@@ -285,6 +285,7 @@ public class Dumpling : MonoBehaviour
                     }
                     else
                     {
+                        BiteSfx();
                         Destroy(col.gameObject);
                         GameManager.Singleton.AddScore(50);
                         SpawnScore("50");

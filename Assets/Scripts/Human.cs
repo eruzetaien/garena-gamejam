@@ -2,9 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using static Dumpling;
 
 public class Human : MonoBehaviour
 {
+    [SerializeField] private SpriteRenderer glow;
     public enum HumanType
     {
         None = 0,
@@ -17,9 +20,13 @@ public class Human : MonoBehaviour
     private bool isJump;
     
     public HumanType humanType = HumanType.None;
-    // Start is called before the first frame update
+    Color defaultLightColor;
+
     void Start()
     {
+
+        defaultLightColor = glow.color;
+
         if (humanType == HumanType.Chef)
         {
             if (SelfDestruct.player == null)
@@ -39,7 +46,43 @@ public class Human : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ChickenState chickenState = GameObject.FindWithTag("Player").GetComponent<Dumpling>().chickenState;
+        switch (humanType)
+        {
+            case HumanType.Child:
+                if (chickenState == ChickenState.STATE_1)
+                {
+                    // player kalah
+                    glow.color = Color.red;
+                }
+                else
+                {
+                    // player menang
+                    glow.color = defaultLightColor;
+                }
+                break;
+            case HumanType.Adult:
+                if (chickenState == ChickenState.STATE_1 ||
+                    chickenState == ChickenState.STATE_2)
+                {
+                    // player kalah
+                    glow.color = Color.red;
+                }
+                else
+                {
+                    // player menang
+                    glow.color = defaultLightColor;
+                }
 
+                break;
+
+            case HumanType.Chef:
+
+                // player kalah
+                glow.color = Color.red;
+
+                break;
+        }
     }
     
     // IEnumerator Jump(Vector2 endPosition)

@@ -27,7 +27,7 @@ public class UiMainMenu : MonoBehaviour
     
     public void Play()
     {
-        SceneManager.LoadScene("Enemy");
+        SceneManager.LoadScene("Player");
     }
     
     

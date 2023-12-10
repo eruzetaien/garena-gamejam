@@ -32,7 +32,6 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private HighScore highScore;
     private int score;
-    private float secondTimer = 0f;   
 
     public void Awake()
     {
