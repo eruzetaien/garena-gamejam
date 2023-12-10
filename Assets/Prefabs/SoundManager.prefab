@@ -48,13 +48,13 @@ MonoBehaviour:
   sounds:
   - name: bite1
     clip: {fileID: 8300000, guid: 4790fadd78bb1004080bce652d6fdf75, type: 3}
-    volume: 0.359
+    volume: 0.184
   - name: bite2
     clip: {fileID: 8300000, guid: 48eb8f6757803304aa4f8cbe718e7470, type: 3}
-    volume: 0.463
+    volume: 0.255
   - name: bite3
     clip: {fileID: 8300000, guid: 1981cd8352b970e418fd629293888cae, type: 3}
-    volume: 0.502
+    volume: 0.316
   - name: jump
     clip: {fileID: 8300000, guid: 42464509d10c7814ba7fe261b2d0c37e, type: 3}
     volume: 0.112

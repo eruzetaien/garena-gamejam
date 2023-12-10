@@ -275,6 +275,7 @@ public class Dumpling : MonoBehaviour
                 case Human.HumanType.Child :
                     if (chickenState == ChickenState.STATE_1)
                     {
+                        SoundManager.soundManager.Play("hurt");
                         StartCoroutine(Respawn(10,false));
                     }
                     else
@@ -289,6 +290,7 @@ public class Dumpling : MonoBehaviour
                     if (chickenState == ChickenState.STATE_1 ||
                         chickenState == ChickenState.STATE_2)
                     {
+                        SoundManager.soundManager.Play("hurt");
                         StartCoroutine(Respawn(10,false));
                     }
                     else
@@ -304,6 +306,7 @@ public class Dumpling : MonoBehaviour
                 case Human.HumanType.Chef :
                     if (chickenState == ChickenState.STATE_1)
                     {
+                        SoundManager.soundManager.Play("hurt");
                         StartCoroutine(Respawn(20,false));
                         break;
                     }
